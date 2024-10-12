@@ -49,13 +49,6 @@ const Navbar = () => {
             <Stack spacing={2} direction="row">
               <Button
                 variant="contained"
-                component={RouterLink}
-                to="/post_question"
-              >
-                Post Question
-              </Button>
-              <Button
-                variant="contained"
                 color="secondary"
                 onClick={() => {
                   session.actions
