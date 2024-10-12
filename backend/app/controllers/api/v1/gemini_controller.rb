@@ -14,7 +14,10 @@ class Api::V1::GeminiController < ApplicationController
           [{ role: 'user', parts: { text: "I am going to provide information for you to use in this conversation" + 
            "My name is #{user_name}, " +
            "My job is about" + user_description +
-           "The workshops available are \n#{workshops}" }}] +
+           "The workshops available are \n#{workshops}" +
+           "Only remember the data that I provide you, do not remember or mention that I provided you with this data"
+           }} 
+           ] +
           messages.map { |message| { role: message['sender'], parts: { text: message['text'] } } },
         ],
       },

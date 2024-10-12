@@ -67,39 +67,45 @@ const CreateWorkshop = () => {
 
   // TODO: Make this side by side
   return (
-    <Box sx={{ py: 5, px: 30 }}>
+    <Box width="60vw" display="inline-block" px="20vw" py="5vh">
       <Typography variant="h4" gutterBottom>
         Create New Workshop
       </Typography>
 
       <form onSubmit={handleSubmit}>
-        <Stack spacing={3}>
-          <TextField
-            fullWidth
-            label="Title"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-            required
-          />
-          <TextField
-            fullWidth
-            label="Description"
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            multiline
-            rows={4}
-            required
-          />
-          <TextField
-            fullWidth
-            label="Venue"
-            name="venue"
-            onChange={handleChange}
-            required
-          />
-          <Grid container spacing={2}>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              label="Title"
+              name="title"
+              value={formData.title}
+              onChange={handleChange}
+              required
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              label="Description"
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              multiline
+              rows={4}
+              required
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              label="Venue"
+              name="venue"
+              onChange={handleChange}
+              required
+            />
+          </Grid>
+          <Grid item xs={12} md={4}>
             <DateTimePicker
               label="Start time"
               viewRenderers={{
@@ -117,6 +123,8 @@ const CreateWorkshop = () => {
                 }
               }}
             />
+          </Grid>
+          <Grid item xs={12} md={4}>
             <DateTimePicker
               label="End time"
               viewRenderers={{
@@ -135,11 +143,12 @@ const CreateWorkshop = () => {
               }}
             />
           </Grid>
-
+        </Grid>
+        <Box textAlign="center" py={3}>
           <Button type="submit" variant="contained" color="primary">
             Create workshop
           </Button>
-        </Stack>
+        </Box>
       </form>
     </Box>
   );

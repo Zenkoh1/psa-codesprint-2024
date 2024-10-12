@@ -59,7 +59,7 @@ const PostQuestionpage = () => {
   };
 
   return (
-    <Box width="50vw" display="inline-block">
+    <Box width="50vw" display="inline-block" px="25vw" textAlign="center">
       <form autoComplete="off" onSubmit={handleSubmit}>
         <h2>Post a question</h2>
         <FormTextField input={title} setInput={setTitle} label="Question" />

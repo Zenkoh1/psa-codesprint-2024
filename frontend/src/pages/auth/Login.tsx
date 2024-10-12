@@ -25,7 +25,7 @@ const Login = () => {
   };
 
   return (
-    <Box width="50vw" display="inline-block">
+    <Box width="50vw" display="inline-block" px="25vw" textAlign="center">
       <form autoComplete="off" onSubmit={handleSubmit}>
         <h2>Login Form</h2>
         <FormTextField

@@ -113,7 +113,13 @@ const WorkshopsPage = () => {
   };
 
   return (
-    <Box sx={{ py: 5, px: 30 }}>
+    <Box
+      width="70vw"
+      display="inline-block"
+      px="15vw"
+      py="5vh"
+      textAlign="center"
+    >
       <form onSubmit={onSubmit}>
         <TextField
           fullWidth

@@ -9,9 +9,11 @@ import {
   Typography,
   Grid,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { MuiMarkdown } from "mui-markdown";
+import React, { useState } from "react";
 import session from "../../api/sessions_manager";
 import axios from "axios";
+import { API_URL } from "../../api/useAPI";
 
 const ChatbotMessage = ({ message }: { message: MessageType }) => {
   return (
@@ -26,7 +28,7 @@ const ChatbotMessage = ({ message }: { message: MessageType }) => {
           margin: "4px 0",
         }}
       >
-        {message.text}
+        <MuiMarkdown>{message.text}</MuiMarkdown>
       </Box>
     </Box>
   );
@@ -35,23 +37,6 @@ const ChatbotMessage = ({ message }: { message: MessageType }) => {
 const Chatbot = () => {
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [inputValue, setInputValue] = useState("");
-
-  /*
-  const {
-    fetchAPI: chatAPI,
-    loading: loadingChat,
-    data: chatData,
-  } = useAPI<ChatbotResponse>("/api/v1/gemini/chatbot", {
-    method: "POST",
-    data: {
-      user_id: session.getters.getUser().id,
-      messages: messages,
-    },
-    headers: {
-      "content-type": "application/json",
-    },
-  });
-  */
 
   const PROMPT_SUGGESTIONS = [
     {
@@ -82,8 +67,12 @@ const Chatbot = () => {
 
       try {
         const user = session.getters.getUser();
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          { sender: "model", text: "..." },
+        ]);
         const response = await axios.post(
-          "/api/v1/gemini/chatbot",
+          API_URL + "/api/v1/gemini/chatbot",
           {
             user_id: user.id,
             messages: newMessages,
@@ -94,12 +83,23 @@ const Chatbot = () => {
         // Append the chatbot's response to messages
         if (response.data?.response) {
           setMessages((prevMessages) => [
-            ...prevMessages,
-            { sender: "bot", text: response.data.response },
+            ...prevMessages.slice(0, -1),
+            { sender: "model", text: response.data.response },
+          ]);
+        } else {
+          setMessages((prevMessages) => [
+            ...prevMessages.slice(0, -1),
+            { sender: "model", text: "Sorry, I didn't get that" },
           ]);
         }
       } catch (error) {
-        console.error("Error sending message:", error);
+        setMessages((prevMessages) => [
+          ...prevMessages.slice(0, -1),
+          {
+            sender: "model",
+            text: "Sorry, I didn't get that, I might have ran out of tokens for because I am free to use.",
+          },
+        ]);
       }
     }
   };

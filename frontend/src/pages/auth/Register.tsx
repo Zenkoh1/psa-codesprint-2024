@@ -34,7 +34,7 @@ const Register = () => {
   };
 
   return (
-    <Box width="50vw" display="inline-block">
+    <Box width="50vw" display="inline-block" px="25vw" textAlign="center">
       <form autoComplete="off" onSubmit={handleSubmit}>
         <h2>Registration Form</h2>
         <FormTextField

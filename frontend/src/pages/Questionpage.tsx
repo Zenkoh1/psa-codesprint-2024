@@ -119,7 +119,13 @@ const Questionpage = () => {
     );
 
   return (
-    <Box py={5} width="50vw" display="inline-block">
+    <Box
+      py={5}
+      width="50vw"
+      display="inline-block"
+      px="25vw"
+      textAlign="center"
+    >
       {isAuthorised(question?.author_id, session.getters.getUser()) && (
         <Button variant="outlined" onClick={onDeleteQuestion} color="error">
           Delete

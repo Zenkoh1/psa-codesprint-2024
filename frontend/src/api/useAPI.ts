@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios, { AxiosRequestConfig } from "axios";
-const API_URL = process.env.REACT_APP_API_ENDPOINT;
+export const API_URL = process.env.REACT_APP_API_ENDPOINT;
 
 /* General purpose hook for making API calls */
 const useAPI = <T>(pathname: string, options?: AxiosRequestConfig) => {

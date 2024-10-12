@@ -133,7 +133,7 @@ const WorkshopDetails = () => {
   }
 
   return (
-    <Box sx={{ py: 5, px: 30 }}>
+    <Box width="60vw" display="inline-block" px="20vw" py="5vh">
       <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 4 }}>
         <Link
           component={RouterLink}
