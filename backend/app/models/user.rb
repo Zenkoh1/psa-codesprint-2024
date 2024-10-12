@@ -1,6 +1,8 @@
 class User < ApplicationRecord
   has_many :questions, inverse_of: 'author'
   has_many :answers, inverse_of: 'author'
+  has_and_belongs_to_many :workshops
+  has_many :workshops, foreign_key: :host_id
   
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable

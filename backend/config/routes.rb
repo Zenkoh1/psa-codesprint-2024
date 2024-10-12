@@ -19,7 +19,14 @@ Rails.application.routes.draw do
       end
       resources :categories
       resources :questions
+
+      resources :workshops do
+        member do
+          put "register", to: "workshops#register"
+          put "unregister", to: "workshops#unregister"
         end
+      end
+    end
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_10_12_131118) do
+ActiveRecord::Schema[7.1].define(version: 2024_10_12_101122) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -69,6 +69,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_12_131118) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  create_table "users_workshops", id: false, force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "workshop_id", null: false
+  end
+
   create_table "votes", force: :cascade do |t|
     t.string "votable_type"
     t.bigint "votable_id"
@@ -85,7 +90,20 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_12_131118) do
     t.index ["voter_type", "voter_id"], name: "index_votes_on_voter"
   end
 
+  create_table "workshops", force: :cascade do |t|
+    t.string "title"
+    t.bigint "host_id", null: false
+    t.string "venue"
+    t.text "description"
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["host_id"], name: "index_workshops_on_host_id"
+  end
+
   add_foreign_key "answers", "questions", on_delete: :cascade
   add_foreign_key "answers", "users", column: "author_id", on_delete: :cascade
   add_foreign_key "questions", "users", column: "author_id", on_delete: :cascade
+  add_foreign_key "workshops", "users", column: "host_id", on_delete: :cascade
 end
