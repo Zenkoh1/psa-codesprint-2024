@@ -47,7 +47,6 @@ const CreateWorkshop = () => {
     event.preventDefault();
     try {
       await createWorkshop();
-      console.log(formData);
       // Redirect back to workshops page after successful creation
       setTimeout(() => {
         navigate("/workshops");
