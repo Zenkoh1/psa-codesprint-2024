@@ -67,6 +67,7 @@ const WorkshopDetails = () => {
         color="primary"
         onClick={() => handleRegister()}
         sx={{ mt: 3 }}
+        disabled={loadingRegisterStatus || !!registerStatus}
       >
         Register
       </Button>
