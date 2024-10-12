@@ -19,4 +19,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
             message: "Something went wrong."
         }, status: :unprocessable_entity
     end
+
+    private
+
+  def sign_up_params    
+    params.require(:user).permit(:username, :email, :password, :password_confirmation, :job_description)
+  end
 end

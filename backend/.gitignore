@@ -36,3 +36,6 @@
 
 # Ignore .env file containing credentials.
 /.env*
+
+# Ignore google cloud credentials
+/config/google-credentials.json
