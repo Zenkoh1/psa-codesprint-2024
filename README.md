@@ -1,4 +1,4 @@
-# CVWO Project!
+# PSA Codesprint 2024!
 Zen Koh
 ## Installation
 ## Step 1 - Dependencies
@@ -15,7 +15,7 @@ You will need:
 From the command line, clone the repository:
 
 ```sh
-git clone https://github.com/Zenkoh1/CVWO-app.git
+git clone https://github.com/Zenkoh1/psa-codesprint-2024.git
 ```
 
 ## Step 3 Setup Frontend
