@@ -4,9 +4,13 @@ import { useNavigate } from "react-router-dom";
 import useAPI from "../../api/useAPI";
 import { useEffect } from "react";
 
-const WorkshopCard = ({ workshop }: { workshop: WorkshopType }) => {
-  const navigate = useNavigate();
-
+const WorkshopCard = ({
+  workshop,
+  onClick,
+}: {
+  workshop: WorkshopType;
+  onClick: () => void;
+}) => {
   return (
     <Card
       sx={{
@@ -17,7 +21,7 @@ const WorkshopCard = ({ workshop }: { workshop: WorkshopType }) => {
           boxShadow: 3,
         },
       }}
-      onClick={() => navigate(`/workshops/${workshop.id}`)}
+      onClick={onClick}
     >
       <CardContent>
         <Typography variant="h6" gutterBottom>
@@ -36,6 +40,8 @@ const WorkshopCard = ({ workshop }: { workshop: WorkshopType }) => {
 };
 
 const WorkshopsWidget = () => {
+  const navigate = useNavigate();
+
   const {
     fetchAPI: fetchWorkshops,
     loading: loadingWorkshops,
@@ -59,7 +65,11 @@ const WorkshopsWidget = () => {
         )
         .slice(0, 2)
         .map((workshop: WorkshopType) => (
-          <WorkshopCard key={workshop.id} workshop={workshop} />
+          <WorkshopCard
+            key={workshop.id}
+            workshop={workshop}
+            onClick={() => navigate(`/workshops/${workshop.id}`)}
+          />
         ))}
     </Paper>
   );

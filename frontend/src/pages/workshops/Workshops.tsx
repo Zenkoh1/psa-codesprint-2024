@@ -18,12 +18,63 @@ import WorkshopType from "../../types/Workshop.type";
 import useAPI from "../../api/useAPI";
 import session from "../../api/sessions_manager";
 
+const WorkshopCard = ({
+  workshop,
+  onClick,
+  recommended,
+}: {
+  workshop: WorkshopType;
+  onClick: () => void;
+  recommended: boolean;
+}) => {
+  return (
+    <Grid item xs={12} sm={6} md={4}>
+      <Card
+        sx={{
+          mb: 2,
+          transition: "transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
+          "&:hover": {
+            transform: "scale(1.03)",
+            boxShadow: 3,
+          },
+        }}
+        onClick={onClick}
+      >
+        <CardContent>
+          <Typography variant="h6" gutterBottom>
+            {workshop.title}
+          </Typography>
+          <Typography variant="body2" color="textSecondary">
+            <strong>Date:</strong> {workshop.start_time.toString()}
+          </Typography>
+          <Typography variant="body2" color="textSecondary">
+            <strong>Location:</strong> {workshop.venue}
+          </Typography>
+          {recommended && (
+            <Typography variant="body2" color="textSecondary">
+              <strong>Recommended</strong>
+            </Typography>
+          )}
+        </CardContent>
+      </Card>
+    </Grid>
+  );
+};
+
 const WorkshopsPage = () => {
   const {
     fetchAPI: fetchWorkshops,
     loading: loadingWorkshops,
     data: workshops,
   } = useAPI<Array<WorkshopType>>("/api/v1/workshops");
+
+  const {
+    fetchAPI: fetchRecommendations,
+    loading: loadingRecommendations,
+    data: recommendations,
+  } = useAPI<Array<WorkshopType>>(
+    `/api/v1/gemini/recommend_workshops?user_id=${session.getters.getUser().id}`,
+  );
 
   const [filteredData, setFilteredData] = useState<Array<WorkshopType>>();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -32,6 +83,7 @@ const WorkshopsPage = () => {
 
   useEffect(() => {
     fetchWorkshops();
+    fetchRecommendations();
   }, []);
 
   // Trigger filtering when the search params change
@@ -60,51 +112,6 @@ const WorkshopsPage = () => {
     setFilteredData(newData);
   };
 
-  const handleCardClick = (id: number) => {
-    navigate(`/workshops/${id}`);
-  };
-
-  const getWorkshopComponents = (filteredData: Array<WorkshopType>) => {
-    if (filteredData.length === 0) {
-      return <Box py={2}>No workshops found</Box>;
-    }
-
-    return filteredData.map((workshop) => (
-      <Grid item xs={12} sm={6} md={4} key={workshop.id}>
-        <Card
-          onClick={() => handleCardClick(workshop.id)}
-          sx={{
-            cursor: "pointer",
-            transition:
-              "transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
-            "&:hover": {
-              transform: "scale(1.02)",
-              boxShadow: 3,
-            },
-          }}
-        >
-          <CardContent>
-            <Typography variant="h6" gutterBottom>
-              {workshop.title}
-            </Typography>
-            <Typography variant="body2" color="textSecondary">
-              {workshop.description}
-            </Typography>
-            <Typography variant="body2" color="textSecondary" mt={2}>
-              <strong>Start date:</strong> {workshop.start_time.toString()}
-            </Typography>
-            <Typography variant="body2" color="textSecondary">
-              <strong>End date:</strong> {workshop.end_time.toString()}
-            </Typography>
-            <Typography variant="body2" color="textSecondary">
-              <strong>Venue:</strong> {workshop.venue}
-            </Typography>
-          </CardContent>
-        </Card>
-      </Grid>
-    ));
-  };
-
   return (
     <Box sx={{ py: 5, px: 30 }}>
       <form onSubmit={onSubmit}>
@@ -131,7 +138,31 @@ const WorkshopsPage = () => {
           spacing={3}
         >
           <Grid container spacing={3}>
-            {getWorkshopComponents(filteredData || [])}
+            {recommendations &&
+              recommendations.length > 0 &&
+              recommendations.map((workshop) => (
+                <WorkshopCard
+                  key={workshop.id}
+                  workshop={workshop}
+                  onClick={() => navigate(`/workshops/${workshop.id}`)}
+                  recommended
+                />
+              ))}
+            {filteredData &&
+              filteredData?.length > 0 &&
+              filteredData
+                ?.filter(
+                  (workshop: WorkshopType) =>
+                    !recommendations?.includes(workshop),
+                )
+                .map((workshop) => (
+                  <WorkshopCard
+                    key={workshop.id}
+                    workshop={workshop}
+                    onClick={() => navigate(`/workshops/${workshop.id}`)}
+                    recommended={false}
+                  />
+                ))}
           </Grid>
         </Stack>
       )}
