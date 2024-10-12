@@ -2,6 +2,8 @@ import "./App.css";
 import { useState, useEffect } from "react";
 import Homepage from "./pages/Homepage";
 import Loginpage from "./pages/Loginpage";
+import Workshops from "./pages/Workshops/Workshops";
+import WorkshopDetails from "./pages/Workshops/WorkshopDetails";
 import {
   Routes,
   Route,
@@ -82,7 +84,7 @@ function App() {
                   component={RouterLink}
                   to="/"
                 >
-                  Parentit
+                  PSA-Codesprint-2024
                 </Typography>
                 {isAuth && (
                   <Typography variant="h6">
@@ -145,6 +147,9 @@ function App() {
             <Route path="/login" element={<Loginpage />} />
             <Route path="/register" element={<Registerpage />} />
             <Route path="/post_question" element={<PostQuestionpage />} />
+
+            <Route path="/workshops" element={<Workshops />} />
+            <Route path="/workshops/:id" element={<WorkshopDetails />} />
           </Routes>
         </BrowserRouter>
       </div>
