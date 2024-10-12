@@ -1,6 +1,6 @@
 class Api::V1::WorkshopsController < ApplicationController
   before_action :set_workshop, only: %i[ show update destroy ]
-  before_action :authenticate_user, only: %i[ create update destroy]
+  before_action :authenticate_user, only: %i[ update destroy]
 
   # GET /workshops
   def index
@@ -33,16 +33,6 @@ class Api::V1::WorkshopsController < ApplicationController
 
   # PATCH/PUT /workshops/1
   def update
-    if current_user.present?
-      if @workshop.host_id != current_user.id || current_user.admin == false
-        render json: {error: "User is not the host of the workshop"}, status: :unprocessable_entity
-        return
-      end
-    else
-      render json: {error: "User is not signed in"}, status: :unprocessable_entity
-      return
-    end
-
     if @workshop.update(workshop_params)
       render json: @workshop
     else
@@ -96,10 +86,8 @@ class Api::V1::WorkshopsController < ApplicationController
       if current_user.present?
         if @workshop.host_id != current_user.id || current_user.admin == false
           render json: {error: "User is not the host of the workshop"}, status: :unprocessable_entity
-          return
         else
           render json: {error: "User is not signed in"}, status: :unprocessable_entity
-          return
         end
       end
     end
