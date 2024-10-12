@@ -55,7 +55,7 @@ const WorkshopsPage = () => {
       )
       .sort(
         (a: WorkshopType, b: WorkshopType) =>
-          a.start_time.getTime() - b.start_time.getTime(),
+          new Date(a.start_time).getTime() - new Date(b.start_time).getTime(),
       );
     setFilteredData(newData);
   };

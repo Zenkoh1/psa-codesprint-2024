@@ -5,6 +5,7 @@ type UserType = {
   admin: boolean;
   created_at: string;
   updated_at: string;
+  job_description: string;
 };
 
 export default UserType;

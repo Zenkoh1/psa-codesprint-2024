@@ -27,6 +27,7 @@ const CreateWorkshop = () => {
         description: formData.description,
         start_time: formData.start_time,
         end_time: formData.end_time,
+        host_id: session.getters.getUser().id,
       },
     },
     headers: {
@@ -46,7 +47,6 @@ const CreateWorkshop = () => {
     event.preventDefault();
     try {
       await createWorkshop();
-      console.log(formData);
       // Redirect back to workshops page after successful creation
       setTimeout(() => {
         navigate("/workshops");

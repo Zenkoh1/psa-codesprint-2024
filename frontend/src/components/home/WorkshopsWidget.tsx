@@ -24,7 +24,8 @@ const WorkshopCard = ({ workshop }: { workshop: WorkshopType }) => {
           {workshop.title}
         </Typography>
         <Typography variant="body2" color="textSecondary">
-          <strong>Date:</strong> {workshop.start_time.getDate().toString()}
+          <strong>Date:</strong>{" "}
+          {new Date(workshop.start_time).getDate().toString()}
         </Typography>
         <Typography variant="body2" color="textSecondary">
           <strong>Location:</strong> {workshop.venue}
@@ -54,7 +55,7 @@ const WorkshopsWidget = () => {
       {workshops
         ?.sort(
           (a: WorkshopType, b: WorkshopType) =>
-            a.start_time.getTime() - b.start_time.getTime(),
+            new Date(a.start_time).getTime() - new Date(b.start_time).getTime(),
         )
         .slice(0, 2)
         .map((workshop: WorkshopType) => (
