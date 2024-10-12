@@ -9,11 +9,14 @@ import {
   Grid,
   Typography,
   Divider,
+  Fab,
 } from "@mui/material";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import AddIcon from "@mui/icons-material/Add";
 import SearchIcon from "@mui/icons-material/Search";
 import WorkshopType from "../../types/Workshop.type";
 import useAPI from "../../api/useAPI";
+import session from "../../api/sessions_manager";
 
 const WorkshopsPage = () => {
   const {
@@ -131,6 +134,15 @@ const WorkshopsPage = () => {
             {getWorkshopComponents(filteredData || [])}
           </Grid>
         </Stack>
+      )}
+      {session.getters.getUser().admin && (
+        <Fab
+          color="primary"
+          onClick={() => navigate("/workshops/create")}
+          sx={{ position: "fixed", bottom: 16, right: 16 }}
+        >
+          <AddIcon />
+        </Fab>
       )}
     </Box>
   );
