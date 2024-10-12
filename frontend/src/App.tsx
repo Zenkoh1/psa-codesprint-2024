@@ -12,6 +12,9 @@ import Navbar from "./components/Navbar";
 import Workshops from "./pages/workshops/Workshops";
 import WorkshopDetails from "./pages/workshops/WorkshopDetails";
 import CreateWorkshop from "./pages/workshops/CreateWorkshop";
+import Questionpage from "./pages/forum/Questionpage";
+import PostQuestionpage from "./pages/forum/PostQuestionpage";
+import Forumpage from "./pages/forum/Forumpage";
 
 /* Check if JWT_Token is stored and attempt to log the user in with that token */
 async function authenticate(): Promise<boolean> {
@@ -66,10 +69,11 @@ function App() {
 
           <Routes>
             <Route path="/" element={<Homepage />} />
-
+            <Route path="/forum" element={<Forumpage />} />
+            <Route path="/question/:id" element={<Questionpage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-
+            <Route path="/post_question" element={<PostQuestionpage />} />
             <Route path="/workshops" element={<Workshops />} />
             <Route path="/workshops/create" element={<CreateWorkshop />} />
             <Route path="/workshops/:id" element={<WorkshopDetails />} />

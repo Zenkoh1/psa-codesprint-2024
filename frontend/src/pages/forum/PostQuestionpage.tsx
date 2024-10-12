@@ -1,11 +1,11 @@
 import { TextField, Button, Box } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import useAPI from "../api/useAPI";
-import session from "../api/sessions_manager";
+import useAPI from "../../api/useAPI";
+import session from "../../api/sessions_manager";
 import Autocomplete from "@mui/material/Autocomplete";
-import FormTextField from "../components/FormTextField";
-import CategoryType from "../types/Category.type";
+import FormTextField from "../../components/FormTextField";
+import CategoryType from "../../types/Category.type";
 
 /* This page is for posting a question */
 const PostQuestionpage = () => {
@@ -50,7 +50,7 @@ const PostQuestionpage = () => {
       fetchQuestionsAPI()
         .then(() => {
           //alert('Question submitted!')
-          navigate("/");
+          navigate("/forum");
         })
         .catch(() => {
           alert("Error submitting question, try logging in!");
@@ -61,8 +61,8 @@ const PostQuestionpage = () => {
   return (
     <Box width="50vw" display="inline-block" px="25vw" textAlign="center">
       <form autoComplete="off" onSubmit={handleSubmit}>
-        <h2>Post a question</h2>
-        <FormTextField input={title} setInput={setTitle} label="Question" />
+        <h2>Add a new post</h2>
+        <FormTextField input={title} setInput={setTitle} label="Title" />
         <Autocomplete
           onChange={handleChange}
           multiple

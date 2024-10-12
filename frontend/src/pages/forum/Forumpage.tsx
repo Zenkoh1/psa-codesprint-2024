@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import useAPI from "../api/useAPI";
-import Question from "../components/Question";
-import QuestionType from "../types/Question.type";
+import useAPI from "../../api/useAPI";
+import Question from "../../components/Question";
+import QuestionType from "../../types/Question.type";
 import {
   Box,
+  Button,
   CircularProgress,
   Divider,
   IconButton,
@@ -13,14 +14,14 @@ import {
   TextFieldProps,
 } from "@mui/material";
 
-import { useSearchParams } from "react-router-dom";
-import CategoryType from "../types/Category.type";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import CategoryType from "../../types/Category.type";
 import SearchIcon from "@mui/icons-material/Search";
 import Tune from "@mui/icons-material/Tune";
-import FilterDialog from "../components/FilterDialog";
+import FilterDialog from "../../components/FilterDialog";
 
-/* This is the homepage where all the questions are displayed */
-const Homepage = () => {
+/* This is the forumpage where all the questions are displayed */
+const Forumpage = () => {
   const {
     fetchAPI,
     loading: loadingQuestions,
@@ -38,6 +39,8 @@ const Homepage = () => {
   const [open, setOpen] = useState(false);
 
   const searchRef = useRef<TextFieldProps>(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchAPI();
@@ -113,7 +116,13 @@ const Homepage = () => {
     );
 
   return (
-    <Box sx={{ py: 5, px: 30 }}>
+    <Box
+      width="70vw"
+      display="inline-block"
+      px="15vw"
+      py="5vh"
+      textAlign="center"
+    >
       <form onSubmit={onSubmit}>
         <TextField
           fullWidth
@@ -138,6 +147,13 @@ const Homepage = () => {
           size="small"
         />
       </form>
+      <Button
+        sx={{ my: 2 }}
+        variant="contained"
+        onClick={() => navigate("/post_question")}
+      >
+        Add A New Post
+      </Button>
       <Stack divider={<Divider orientation="horizontal" flexItem />}>
         {getQuestionComponents(filteredData)}
       </Stack>
@@ -153,4 +169,4 @@ const Homepage = () => {
   );
 };
 
-export default Homepage;
+export default Forumpage;

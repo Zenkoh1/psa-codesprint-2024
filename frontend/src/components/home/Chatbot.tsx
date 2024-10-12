@@ -98,7 +98,7 @@ const Chatbot = () => {
           ...prevMessages.slice(0, -1),
           {
             sender: "model",
-            text: "Sorry, I didn't get that, I might have ran out of tokens for because I am free to use.",
+            text: "Sorry, I didn't get that, I might have ran out of tokens because I am free to use.",
           },
         ]);
       }

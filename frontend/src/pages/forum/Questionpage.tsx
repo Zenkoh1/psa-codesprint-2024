@@ -9,15 +9,15 @@ import {
   Avatar,
   Divider,
 } from "@mui/material";
-import useAPI from "../api/useAPI";
-import QuestionType from "../types/Question.type";
+import useAPI from "../../api/useAPI";
+import QuestionType from "../../types/Question.type";
 import { useNavigate, useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
-import AnswerType from "../types/Answer.type";
-import Answer from "../components/Answer";
-import CategoryType from "../types/Category.type";
-import session from "../api/sessions_manager";
-import isAuthorised from "../utils/check_authorised";
+import AnswerType from "../../types/Answer.type";
+import Answer from "../../components/Answer";
+import CategoryType from "../../types/Category.type";
+import session from "../../api/sessions_manager";
+import isAuthorised from "../../utils/check_authorised";
 
 /* This page is for viewing an individual question */
 const Questionpage = () => {
@@ -85,7 +85,7 @@ const Questionpage = () => {
           fetchAPI();
         })
         .catch(() => {
-          alert("Error submitting answer, try logging in!");
+          alert("Error submitting comment, try logging in!");
         });
     }
   };
@@ -183,7 +183,7 @@ const Questionpage = () => {
           variant="contained"
           onClick={onSubmitAnswer}
         >
-          Submit Answer
+          Submit Comment
         </Button>
       </div>
       <Stack divider={<Divider orientation="horizontal" flexItem />}>
