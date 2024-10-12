@@ -10,7 +10,7 @@ import {
   Grid,
 } from "@mui/material";
 import { MuiMarkdown } from "mui-markdown";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import session from "../../api/sessions_manager";
 import axios from "axios";
 import { API_URL } from "../../api/useAPI";
@@ -37,6 +37,7 @@ const ChatbotMessage = ({ message }: { message: MessageType }) => {
 const Chatbot = () => {
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [inputValue, setInputValue] = useState("");
+  const { isAuth } = useContext(session.SessionContext);
 
   const PROMPT_SUGGESTIONS = [
     {
@@ -112,6 +113,8 @@ const Chatbot = () => {
         height: "70vh",
         display: "flex",
         flexDirection: "column",
+        pointerEvents: isAuth ? "all" : "none",
+        opacity: isAuth ? 1 : 0.5,
       }}
     >
       <Box sx={{ flex: 1, overflowY: "auto", marginBottom: 2, padding: 2 }}>
