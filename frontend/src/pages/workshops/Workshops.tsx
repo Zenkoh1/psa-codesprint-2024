@@ -52,7 +52,7 @@ const WorkshopCard = ({
           </Typography>
           {recommended && (
             <Typography variant="body2" color="textSecondary">
-              <strong>Recommended</strong>
+              <strong>Recommended ⭐</strong>
             </Typography>
           )}
         </CardContent>
@@ -148,12 +148,15 @@ const WorkshopsPage = () => {
                   recommended
                 />
               ))}
+            {/* This is possibly very unoptimized, change later */}
             {filteredData &&
               filteredData?.length > 0 &&
               filteredData
                 ?.filter(
                   (workshop: WorkshopType) =>
-                    !recommendations?.includes(workshop),
+                    !recommendations?.find(
+                      (recommended) => recommended.id === workshop.id,
+                    ),
                 )
                 .map((workshop) => (
                   <WorkshopCard
