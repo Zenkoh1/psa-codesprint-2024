@@ -7,9 +7,11 @@ import session from "./api/sessions_manager";
 import Homepage from "./pages/Homepage";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
+import Navbar from "./components/Navbar";
+
 import Workshops from "./pages/workshops/Workshops";
 import WorkshopDetails from "./pages/workshops/WorkshopDetails";
-import Navbar from "./components/Navbar";
+import CreateWorkshop from "./pages/workshops/CreateWorkshop";
 
 /* Check if JWT_Token is stored and attempt to log the user in with that token */
 async function authenticate(): Promise<boolean> {
@@ -69,6 +71,7 @@ function App() {
             <Route path="/register" element={<Register />} />
 
             <Route path="/workshops" element={<Workshops />} />
+            <Route path="/workshops/create" element={<CreateWorkshop />} />
             <Route path="/workshops/:id" element={<WorkshopDetails />} />
           </Routes>
         </BrowserRouter>
