@@ -20,6 +20,10 @@ import { useEffect, useState } from "react";
 import UserType from "../../types/User.type";
 import session from "../../api/sessions_manager";
 
+type RegisterStatusType = {
+  registered: boolean;
+};
+
 const WorkshopDetails = () => {
   const { id } = useParams<{ id: string }>();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -36,7 +40,7 @@ const WorkshopDetails = () => {
     loading: loadingRegisterStatus,
     data: registerStatus,
     setData: setRegisterStatus,
-  } = useAPI<boolean>(
+  } = useAPI<RegisterStatusType>(
     `/api/v1/workshops/${id}/registration_status?user_id=${session.getters.getUser().id}`,
   );
 
@@ -88,10 +92,10 @@ const WorkshopDetails = () => {
   }, [registerStatus]);
 
   const handleRegister = () => {
-    if (registerStatus) {
+    if (registerStatus?.registered) {
       unregisterWorkshop()
         .then(() => {
-          setRegisterStatus(false);
+          setRegisterStatus({ registered: false });
           alert("Registered successfully!");
         })
         .catch(() => {
@@ -100,7 +104,7 @@ const WorkshopDetails = () => {
     } else {
       registerWorkshop()
         .then(() => {
-          setRegisterStatus(true);
+          setRegisterStatus({ registered: true });
           alert("Registered successfully!");
         })
         .catch(() => {
@@ -165,8 +169,8 @@ const WorkshopDetails = () => {
         sx={{ mt: 3 }}
       >
         {loadingRegisterStatus && "Loading..."}
-        {!loadingRegisterStatus && registerStatus && "Unregister"}
-        {!loadingRegisterStatus && !registerStatus && "Register"}
+        {!loadingRegisterStatus && registerStatus?.registered && "Unregister"}
+        {!loadingRegisterStatus && !registerStatus?.registered && "Register"}
       </Button>
 
       {session.getters.getUser().admin && (

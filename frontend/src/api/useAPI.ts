@@ -12,7 +12,7 @@ const useAPI = <T>(pathname: string, options?: AxiosRequestConfig) => {
       const data = await response.data;
       setData(data);
       setLoading(false);
-      // console.log(data);
+      console.log(data);
     } catch (error) {
       alert("Error fetching data");
     }
