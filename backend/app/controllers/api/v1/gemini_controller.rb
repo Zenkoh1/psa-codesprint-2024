@@ -4,12 +4,15 @@ class Api::V1::GeminiController < ApplicationController
     workshops = Workshop.all.map { 
       |workshop| "- Title: #{workshop.title}, Description: #{workshop.description}, " + 
       "Start Time: #{workshop.start_time}, End Time: #{workshop.end_time}\n" }.join
-    user_description = User.find(params[:user_id]).job_description || ""
+    user = User.find(params[:user_id])
+    user_description = user || ""
+    user_name = user.username || ""
     client = GeminiAi::Client.new
     result = client.generate_content(
       {
         contents: [
           [{ role: 'user', parts: { text: "I am going to provide information for you to use in this conversation" + 
+           "My name is #{user_name}, " +
            "My job is about" + user_description +
            "The workshops available are \n#{workshops}" }}] +
           messages.map { |message| { role: message['sender'], parts: { text: message['text'] } } },
