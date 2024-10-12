@@ -35,39 +35,78 @@ const WorkshopDetails = () => {
     fetchAPI: fetchRegisterStatus,
     loading: loadingRegisterStatus,
     data: registerStatus,
-  } = useAPI<boolean>(`/api/v1/workshops/${id}/registration_status`);
+    setData: setRegisterStatus,
+  } = useAPI<boolean>(
+    `/api/v1/workshops/${id}/registration_status?user_id=${session.getters.getUser().id}`,
+  );
 
   const {
     fetchAPI: fetchRegisteredUsers,
     loading: loadingRegisteredUsers,
     data: registeredUsers,
-  } = useAPI<Array<UserType>>(`/api/v1/workshops/${id}/registered_users`);
+  } = useAPI<Array<UserType>>(
+    `/api/v1/workshops/${id}/registrants?user_id=${session.getters.getUser().id}`,
+  );
 
   const { fetchAPI: deleteWorkshop } = useAPI(`/api/v1/workshops/${id}`, {
     method: "DELETE",
   });
 
-  const { fetchAPI: registerWorkshopAPI } = useAPI(
+  const { fetchAPI: registerWorkshop } = useAPI(
     `/api/v1/workshops/${id}/register`,
     {
-      method: "POST",
+      method: "PUT",
+      data: {
+        user_id: session.getters.getUser().id,
+      },
+      headers: {
+        "content-type": "application/json",
+      },
+    },
+  );
+
+  const { fetchAPI: unregisterWorkshop } = useAPI(
+    `/api/v1/workshops/${id}/unregister`,
+    {
+      method: "PUT",
+      data: {
+        user_id: session.getters.getUser().id,
+      },
+      headers: {
+        "content-type": "application/json",
+      },
     },
   );
 
   useEffect(() => {
     fetchWorkshop();
     fetchRegisterStatus();
-    if (session.getters.getUser().admin) fetchRegisteredUsers();
   }, []);
 
+  useEffect(() => {
+    if (session.getters.getUser().admin) fetchRegisteredUsers();
+  }, [registerStatus]);
+
   const handleRegister = () => {
-    registerWorkshopAPI()
-      .then(() => {
-        alert("Registered successfully!");
-      })
-      .catch(() => {
-        alert("Error registering, try logging in!");
-      });
+    if (registerStatus) {
+      unregisterWorkshop()
+        .then(() => {
+          setRegisterStatus(false);
+          alert("Registered successfully!");
+        })
+        .catch(() => {
+          alert("Error registering, try logging in!");
+        });
+    } else {
+      registerWorkshop()
+        .then(() => {
+          setRegisterStatus(true);
+          alert("Registered successfully!");
+        })
+        .catch(() => {
+          alert("Error registering, try logging in!");
+        });
+    }
   };
 
   const handleDelete = () => {
@@ -122,12 +161,11 @@ const WorkshopDetails = () => {
       <Button
         variant="contained"
         color="primary"
-        onClick={() => handleRegister()}
+        onClick={handleRegister}
         sx={{ mt: 3 }}
-        disabled={loadingRegisterStatus || !!registerStatus}
       >
         {loadingRegisterStatus && "Loading..."}
-        {!loadingRegisterStatus && registerStatus && "Registered"}
+        {!loadingRegisterStatus && registerStatus && "Unregister"}
         {!loadingRegisterStatus && !registerStatus && "Register"}
       </Button>
 
