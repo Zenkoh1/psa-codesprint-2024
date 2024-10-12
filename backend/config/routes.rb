@@ -12,6 +12,8 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       get '/gemini/recommend_workshops', to: 'gemini#recommend_workshops'
+      post '/gemini/chatbot', to: 'gemini#chatbot'
+
       resources :answers do
         member do
           put "like", to: "answers#upvote"
