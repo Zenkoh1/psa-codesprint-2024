@@ -1,4 +1,5 @@
 import { Send } from "@mui/icons-material";
+import MessageType from "../../types/Message.type";
 import {
   Box,
   Button,
@@ -8,13 +9,50 @@ import {
   Typography,
   Grid,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import session from "../../api/sessions_manager";
+import axios from "axios";
 
-const ChatbotMessage = () => {
-  return <>hello</>;
+const ChatbotMessage = ({ message }: { message: MessageType }) => {
+  return (
+    <Box sx={{ textAlign: message.sender === "user" ? "right" : "left" }}>
+      <Box
+        sx={{
+          display: "inline-block",
+          backgroundColor: message.sender === "user" ? "#3f51b5" : "#f1f1f1",
+          color: message.sender === "user" ? "white" : "black",
+          borderRadius: "8px",
+          padding: "8px",
+          margin: "4px 0",
+        }}
+      >
+        {message.text}
+      </Box>
+    </Box>
+  );
 };
 
 const Chatbot = () => {
+  const [messages, setMessages] = useState<MessageType[]>([]);
+  const [inputValue, setInputValue] = useState("");
+
+  /*
+  const {
+    fetchAPI: chatAPI,
+    loading: loadingChat,
+    data: chatData,
+  } = useAPI<ChatbotResponse>("/api/v1/gemini/chatbot", {
+    method: "POST",
+    data: {
+      user_id: session.getters.getUser().id,
+      messages: messages,
+    },
+    headers: {
+      "content-type": "application/json",
+    },
+  });
+  */
+
   const PROMPT_SUGGESTIONS = [
     {
       title: "Explain",
@@ -34,28 +72,35 @@ const Chatbot = () => {
     },
   ]; // aiya anything la
 
-  type MessageType = {
-    sender: string;
-    text: string;
-  };
-
-  const [messages, setMessages] = useState<MessageType[]>([]);
-  const [inputValue, setInputValue] = useState("");
-
-  const handleSendMessage = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSendMessage = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (inputValue.trim()) {
-      setMessages([...messages, { sender: "user", text: inputValue }]);
+      const newMessages = [...messages, { sender: "user", text: inputValue }];
+      setMessages(newMessages);
       setInputValue("");
 
-      // Simulate a bot response
-      setTimeout(() => {
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          { sender: "bot", text: `You said: ${inputValue}` }, // TODO: Replace with actual bot response logic
-        ]);
-      }, 1000);
+      try {
+        const user = session.getters.getUser();
+        const response = await axios.post(
+          "/api/v1/gemini/chatbot",
+          {
+            user_id: user.id,
+            messages: newMessages,
+          },
+          { headers: { "content-type": "application/json" } },
+        );
+
+        // Append the chatbot's response to messages
+        if (response.data?.response) {
+          setMessages((prevMessages) => [
+            ...prevMessages,
+            { sender: "bot", text: response.data.response },
+          ]);
+        }
+      } catch (error) {
+        console.error("Error sending message:", error);
+      }
     }
   };
 
@@ -99,25 +144,10 @@ const Chatbot = () => {
           </Box>
         )}
 
-        {messages.map((msg, index) => (
-          <Typography
-            key={index}
-            align={msg.sender === "user" ? "right" : "left"}
-          >
-            <Box
-              sx={{
-                display: "inline-block",
-                backgroundColor: msg.sender === "user" ? "#3f51b5" : "#f1f1f1",
-                color: msg.sender === "user" ? "white" : "black",
-                borderRadius: "8px",
-                padding: "8px",
-                margin: "4px 0",
-              }}
-            >
-              {msg.text}
-            </Box>
-          </Typography>
-        ))}
+        {messages.length > 0 &&
+          messages.map((msg, index) => (
+            <ChatbotMessage key={index} message={msg} />
+          ))}
       </Box>
 
       <form onSubmit={handleSendMessage}>
