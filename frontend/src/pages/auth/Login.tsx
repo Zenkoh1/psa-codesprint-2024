@@ -1,11 +1,11 @@
 import { Button, Box } from "@mui/material";
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import session from "../api/sessions_manager";
-import FormTextField from "../components/FormTextField";
+import session from "../../api/sessions_manager";
+import FormTextField from "../../components/FormTextField";
 
 /* This page is for logging in a user */
-const Loginpage = () => {
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { setIsAuth } = useContext(session.SessionContext);
@@ -48,4 +48,4 @@ const Loginpage = () => {
   );
 };
 
-export default Loginpage;
+export default Login;
