@@ -25,6 +25,8 @@ Rails.application.routes.draw do
         member do
           put "register", to: "workshops#register"
           put "unregister", to: "workshops#unregister"
+          get "registration_status", to: "workshops#registration_status"
+          get "registrants", to: "workshops#registrants"
         end
       end
     end

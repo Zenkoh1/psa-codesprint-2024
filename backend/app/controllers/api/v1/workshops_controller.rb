@@ -38,6 +38,22 @@ class Api::V1::WorkshopsController < ApplicationController
     @workshop.destroy!
   end
 
+  def registrants
+    @workshop = Workshop.find(params[:id])
+    render json: @workshop.users
+  end
+
+  def registration_status
+    @user = User.find(params[:user_id])
+    @workshop = Workshop.find(params[:id])
+
+    if @workshop.users.include? @user
+      render json: {registered: true}
+    else
+      render json: {registered: false}
+    end
+  end
+
   def register
     @user = User.find(params[:user_id])
 
