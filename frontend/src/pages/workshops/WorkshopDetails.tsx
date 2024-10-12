@@ -1,11 +1,29 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { Box, Button, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Typography,
+  Breadcrumbs,
+  Link,
+  Fab,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { Link as RouterLink } from "react-router-dom";
 import useAPI from "../../api/useAPI";
 import WorkshopType from "../../types/Workshop.type";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import UserType from "../../types/User.type";
+import session from "../../api/sessions_manager";
 
 const WorkshopDetails = () => {
   const { id } = useParams<{ id: string }>();
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const navigate = useNavigate();
 
   const {
     fetchAPI: fetchWorkshop,
@@ -13,26 +31,92 @@ const WorkshopDetails = () => {
     data: workshop,
   } = useAPI<WorkshopType>(`/api/v1/workshops/${id}`);
 
-  const { fetchAPI: registerWorkshopAPI } = useAPI(
+  const {
+    fetchAPI: fetchRegisterStatus,
+    loading: loadingRegisterStatus,
+    data: registerStatus,
+    setData: setRegisterStatus,
+  } = useAPI<boolean>(
+    `/api/v1/workshops/${id}/registration_status?user_id=${session.getters.getUser().id}`,
+  );
+
+  const {
+    fetchAPI: fetchRegisteredUsers,
+    loading: loadingRegisteredUsers,
+    data: registeredUsers,
+  } = useAPI<Array<UserType>>(
+    `/api/v1/workshops/${id}/registrants?user_id=${session.getters.getUser().id}`,
+  );
+
+  const { fetchAPI: deleteWorkshop } = useAPI(`/api/v1/workshops/${id}`, {
+    method: "DELETE",
+  });
+
+  const { fetchAPI: registerWorkshop } = useAPI(
     `/api/v1/workshops/${id}/register`,
     {
-      method: "POST",
+      method: "PUT",
+      data: {
+        user_id: session.getters.getUser().id,
+      },
+      headers: {
+        "content-type": "application/json",
+      },
     },
   );
 
-  const navigate = useNavigate();
+  const { fetchAPI: unregisterWorkshop } = useAPI(
+    `/api/v1/workshops/${id}/unregister`,
+    {
+      method: "PUT",
+      data: {
+        user_id: session.getters.getUser().id,
+      },
+      headers: {
+        "content-type": "application/json",
+      },
+    },
+  );
 
   useEffect(() => {
     fetchWorkshop();
+    fetchRegisterStatus();
   }, []);
 
+  useEffect(() => {
+    if (session.getters.getUser().admin) fetchRegisteredUsers();
+  }, [registerStatus]);
+
   const handleRegister = () => {
-    registerWorkshopAPI()
+    if (registerStatus) {
+      unregisterWorkshop()
+        .then(() => {
+          setRegisterStatus(false);
+          alert("Registered successfully!");
+        })
+        .catch(() => {
+          alert("Error registering, try logging in!");
+        });
+    } else {
+      registerWorkshop()
+        .then(() => {
+          setRegisterStatus(true);
+          alert("Registered successfully!");
+        })
+        .catch(() => {
+          alert("Error registering, try logging in!");
+        });
+    }
+  };
+
+  const handleDelete = () => {
+    deleteWorkshop()
       .then(() => {
-        alert("Registered successfully!");
+        alert("Workshop deleted successfully!");
+        navigate("/workshops");
       })
       .catch(() => {
-        alert("Error registering, try logging in!");
+        alert("Error deleting workshop");
       });
   };
 
@@ -46,6 +130,18 @@ const WorkshopDetails = () => {
 
   return (
     <Box sx={{ py: 5, px: 30 }}>
+      <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 4 }}>
+        <Link
+          component={RouterLink}
+          to="/workshops"
+          underline="hover"
+          color="inherit"
+        >
+          All Workshops
+        </Link>
+        <Typography color="textPrimary">{workshop.title}</Typography>
+      </Breadcrumbs>
+
       <Typography variant="h4" gutterBottom>
         {workshop.title}
       </Typography>
@@ -65,19 +161,68 @@ const WorkshopDetails = () => {
       <Button
         variant="contained"
         color="primary"
-        onClick={() => handleRegister()}
+        onClick={handleRegister}
         sx={{ mt: 3 }}
       >
-        Register
+        {loadingRegisterStatus && "Loading..."}
+        {!loadingRegisterStatus && registerStatus && "Unregister"}
+        {!loadingRegisterStatus && !registerStatus && "Register"}
       </Button>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => navigate("/workshops")}
-        sx={{ mt: 3 }}
-      >
-        Back to Workshops
-      </Button>
+
+      {session.getters.getUser().admin && (
+        <Box mt={5}>
+          <Typography variant="h5">Registered Users</Typography>
+          {loadingRegisteredUsers && <Box>Loading...</Box>}
+          {registeredUsers && (
+            <Box>
+              {registeredUsers.map((user) => (
+                <Box key={user.id}>{user.username}</Box>
+              ))}
+            </Box>
+          )}
+        </Box>
+      )}
+
+      {session.getters.getUser().admin && (
+        <Fab
+          color="secondary"
+          aria-label="delete"
+          sx={{ position: "fixed", bottom: 16, right: 16 }}
+          onClick={() => setDeleteDialogOpen(true)}
+        >
+          <DeleteIcon />
+        </Fab>
+      )}
+
+      {deleteDialogOpen && (
+        <Dialog
+          open={deleteDialogOpen}
+          onClose={() => setDeleteDialogOpen(false)}
+        >
+          <DialogTitle>Delete Workshop</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Are you sure you want to delete this workshop?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() => setDeleteDialogOpen(false)}
+              color="primary"
+              variant="outlined"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleDelete}
+              color="secondary"
+              variant="contained"
+            >
+              Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
+      )}
     </Box>
   );
 };
