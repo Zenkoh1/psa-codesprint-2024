@@ -72,6 +72,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_12_101122) do
   create_table "users_workshops", id: false, force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "workshop_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "workshop_id"], name: "index_users_workshops_on_user_id_and_workshop_id"
+    t.index ["workshop_id", "user_id"], name: "index_users_workshops_on_workshop_id_and_user_id"
   end
 
   create_table "votes", force: :cascade do |t|

@@ -1,11 +1,11 @@
 import { Button, Box } from "@mui/material";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import session from "../api/sessions_manager";
-import FormTextField from "../components/FormTextField";
+import session from "../../api/sessions_manager";
+import FormTextField from "../../components/FormTextField";
 
 /* This page is for registering a new user */
-const Registerpage = () => {
+const Register = () => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -70,4 +70,4 @@ const Registerpage = () => {
   );
 };
 
-export default Registerpage;
+export default Register;

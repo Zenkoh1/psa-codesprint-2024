@@ -1,9 +1,10 @@
 import "./App.css";
 import { useState, useEffect } from "react";
 import Homepage from "./pages/Homepage";
-import Loginpage from "./pages/Loginpage";
-import Workshops from "./pages/Workshops/Workshops";
-import WorkshopDetails from "./pages/Workshops/WorkshopDetails";
+import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
+import Workshops from "./pages/workshops/Workshops";
+import WorkshopDetails from "./pages/workshops/WorkshopDetails";
 import {
   Routes,
   Route,
@@ -19,9 +20,6 @@ import {
   CircularProgress,
 } from "@mui/material";
 import session from "./api/sessions_manager";
-import PostQuestionpage from "./pages/PostQuestionpage";
-import Questionpage from "./pages/Questionpage";
-import Registerpage from "./pages/Registerpage";
 
 /* Check if JWT_Token is stored and attempt to log the user in with that token */
 async function authenticate(): Promise<boolean> {
@@ -143,10 +141,9 @@ function App() {
 
           <Routes>
             <Route path="/" element={<Homepage />} />
-            <Route path="/question/:id" element={<Questionpage />} />
-            <Route path="/login" element={<Loginpage />} />
-            <Route path="/register" element={<Registerpage />} />
-            <Route path="/post_question" element={<PostQuestionpage />} />
+
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
 
             <Route path="/workshops" element={<Workshops />} />
             <Route path="/workshops/:id" element={<WorkshopDetails />} />

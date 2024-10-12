@@ -88,10 +88,13 @@ const WorkshopsPage = () => {
               {workshop.description}
             </Typography>
             <Typography variant="body2" color="textSecondary" mt={2}>
-              {/*<strong>Date:</strong> {workshop.}*/}
+              <strong>Start date:</strong> {workshop.start_time.toString()}
             </Typography>
             <Typography variant="body2" color="textSecondary">
-              {/*<strong>Location:</strong> {workshop.location}*/}
+              <strong>End date:</strong> {workshop.end_time.toString()}
+            </Typography>
+            <Typography variant="body2" color="textSecondary">
+              <strong>Venue:</strong> {workshop.venue}
             </Typography>
           </CardContent>
         </Card>
