@@ -5,7 +5,7 @@ class Api::V1::GeminiController < ApplicationController
       |workshop| "- Title: #{workshop.title}, Description: #{workshop.description}, " + 
       "Start Time: #{workshop.start_time}, End Time: #{workshop.end_time}\n" }.join
     user = User.find(params[:user_id])
-    user_description = user || ""
+    user_description = user.job_description || ""
     user_name = user.username || ""
     client = GeminiAi::Client.new
     result = client.generate_content(
