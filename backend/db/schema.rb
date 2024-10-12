@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_10_12_144344) do
+ActiveRecord::Schema[7.1].define(version: 2024_10_12_181711) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -36,6 +36,19 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_12_144344) do
     t.bigint "question_id", null: false
     t.index ["category_id"], name: "index_categories_questions_on_category_id"
     t.index ["question_id"], name: "index_categories_questions_on_question_id"
+  end
+
+  create_table "events", force: :cascade do |t|
+    t.string "title"
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.bigint "user_id", null: false
+    t.bigint "workshop_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "workshop_id"], name: "index_events_on_user_id_and_workshop_id"
+    t.index ["user_id"], name: "index_events_on_user_id"
+    t.index ["workshop_id"], name: "index_events_on_workshop_id"
   end
 
   create_table "jwt_denylist", force: :cascade do |t|
@@ -109,6 +122,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_12_144344) do
 
   add_foreign_key "answers", "questions", on_delete: :cascade
   add_foreign_key "answers", "users", column: "author_id", on_delete: :cascade
+  add_foreign_key "events", "users"
+  add_foreign_key "events", "workshops"
   add_foreign_key "questions", "users", column: "author_id", on_delete: :cascade
   add_foreign_key "workshops", "users", column: "host_id", on_delete: :cascade
 end
