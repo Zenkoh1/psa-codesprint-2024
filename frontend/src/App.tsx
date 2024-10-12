@@ -44,7 +44,7 @@ async function authenticate(): Promise<boolean> {
 
 function App() {
   useEffect(() => {
-    document.title = "CVWO - Parentit";
+    document.title = "CodeSprint - [app name]";
   }, []);
 
   const [userInfoLoaded, setUserInfoLoaded] = useState(false);

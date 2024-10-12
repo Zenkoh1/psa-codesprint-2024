@@ -16,7 +16,7 @@ default: &default
 development:
   <<: *default
  # database: storage/development.sqlite3
-  database: cwvo_database_development
+  database: codesprint_database_development
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -24,9 +24,9 @@ development:
 test:
   <<: *default
   #database: storage/test.sqlite3
-  database: cwvo_database_test
+  database: codesprint_database_test
 
 production:
   <<: *default
   #database: storage/production.sqlite3
-  database: cwvo_database_production
+  database: codesprint_database_production
