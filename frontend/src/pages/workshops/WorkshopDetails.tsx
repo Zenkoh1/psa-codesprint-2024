@@ -19,6 +19,7 @@ import WorkshopType from "../../types/Workshop.type";
 import { useEffect, useState } from "react";
 import UserType from "../../types/User.type";
 import session from "../../api/sessions_manager";
+import formatDate from "../../utils/formatDate";
 
 type RegisterStatusType = {
   registered: boolean;
@@ -153,10 +154,10 @@ const WorkshopDetails = () => {
         {workshop.description}
       </Typography>
       <Typography variant="body2" color="textSecondary" paragraph>
-        <strong>Start time:</strong> {workshop.start_time.toString()}
+        <strong>Start time:</strong> {formatDate(workshop.start_time)}
       </Typography>
       <Typography variant="body2" color="textSecondary" paragraph>
-        <strong>End time:</strong> {workshop.end_time.toString()}
+        <strong>End time:</strong> {formatDate(workshop.end_time)}
       </Typography>
       <Typography variant="body2" color="textSecondary" paragraph>
         <strong>Venue:</strong> {workshop.venue}

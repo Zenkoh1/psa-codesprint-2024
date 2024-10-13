@@ -17,6 +17,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import WorkshopType from "../../types/Workshop.type";
 import useAPI from "../../api/useAPI";
 import session from "../../api/sessions_manager";
+import formatDate from "../../utils/formatDate";
 
 const WorkshopCard = ({
   workshop,
@@ -45,7 +46,7 @@ const WorkshopCard = ({
             {workshop.title}
           </Typography>
           <Typography variant="body2" color="textSecondary">
-            <strong>Date:</strong> {workshop.start_time.toString()}
+            <strong>Date:</strong> {formatDate(workshop.start_time)}
           </Typography>
           <Typography variant="body2" color="textSecondary">
             <strong>Location:</strong> {workshop.venue}

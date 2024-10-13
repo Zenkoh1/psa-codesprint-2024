@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import useAPI from "../../api/useAPI";
 import { useEffect } from "react";
 import { ArrowForward } from "@mui/icons-material";
+import formatDate from "../../utils/formatDate";
 
 const WorkshopCard = ({
   workshop,
@@ -36,8 +37,7 @@ const WorkshopCard = ({
           {workshop.title}
         </Typography>
         <Typography variant="body2" color="textSecondary">
-          <strong>Date:</strong>{" "}
-          {new Date(workshop.start_time).getDate().toString()}
+          <strong>Date:</strong> {formatDate(workshop.start_time)}
         </Typography>
         <Typography variant="body2" color="textSecondary">
           <strong>Location:</strong> {workshop.venue}
