@@ -7,9 +7,11 @@ import FormTextField from "../../components/FormTextField";
 const Register = () => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
+  const [jobTitle, setJobTitle] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
+
   const { setIsAuth } = useContext(session.SessionContext);
   const navigate = useNavigate();
 
@@ -22,7 +24,9 @@ const Register = () => {
 
     if (email && password) {
       session.actions
-        .registerUser({ user: { email, password, username } })
+        .registerUser({
+          user: { email, password, username, job_description: jobTitle },
+        })
         .then(() => {
           if (session.getters.isLoggedIn()) {
             navigate("/");
@@ -62,6 +66,11 @@ const Register = () => {
               setInput={setEmail}
               type="email"
               label="Email"
+            />
+            <FormTextField
+              input={jobTitle}
+              setInput={setJobTitle}
+              label="Job Title"
             />
             <FormTextField
               input={password}

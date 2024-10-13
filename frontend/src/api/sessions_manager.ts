@@ -10,6 +10,7 @@ type payloadType = {
     username?: string | null;
     password: string | null;
     email: string | null;
+    job_description?: string | null;
   };
 };
 type stateType = {
