@@ -102,7 +102,7 @@ const WorkshopDetails = () => {
           alert("Unregistered successfully!");
         })
         .catch(() => {
-          alert("Error registering, try logging in!");
+          alert("Error unregistering, try logging in!");
         });
     } else {
       registerWorkshop()
