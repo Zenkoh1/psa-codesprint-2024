@@ -99,8 +99,9 @@ function App() {
             <Route path="/workshops/create" element={<CreateWorkshop />} />
             <Route path="/workshops/:id" element={<WorkshopDetails />} />
             <Route path="/calendar" element={<Calendar />} />
-            {/* TODO: Add a guard to prevent non-admin users from accessing this route */}
-            <Route path="/admin_dashboard" element={<AdminDashboard />} />
+            {session.getters?.getUser()?.admin && (
+              <Route path="/admin_dashboard" element={<AdminDashboard />} />
+            )}
           </Routes>
         </BrowserRouter>
       </div>
