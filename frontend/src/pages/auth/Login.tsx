@@ -8,17 +8,21 @@ import FormTextField from "../../components/FormTextField";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const queryParam = new URLSearchParams(window.location.search);
   const { setIsAuth } = useContext(session.SessionContext);
   const navigate = useNavigate();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     if (email && password) {
       session.actions.loginUser({ user: { email, password } }).then(() => {
         if (session.getters.isLoggedIn()) {
           setIsAuth(true);
-          navigate("/");
+          if (queryParam.get("path_from")) {
+            navigate(queryParam.get("path_from") as string);
+          } else {
+            navigate("/");
+          }
         }
       });
     }
