@@ -13,6 +13,7 @@ import {
   DialogTitle,
   CircularProgress,
   Stack,
+  Tooltip,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Link as RouterLink } from "react-router-dom";
@@ -95,6 +96,12 @@ const WorkshopDetails = () => {
   }, [registerStatus]);
 
   const handleRegister = () => {
+    console.log(workshop?.start_time);
+    if (workshop?.start_time && new Date(workshop?.start_time) < new Date()) {
+      alert("Workshop has already started");
+      return;
+    }
+
     if (registerStatus?.registered) {
       unregisterWorkshop()
         .then(() => {
@@ -168,7 +175,6 @@ const WorkshopDetails = () => {
       <Typography variant="body2" color="textSecondary" paragraph>
         <strong>Venue:</strong> {workshop.venue}
       </Typography>
-
       <Button
         variant="contained"
         color="primary"
@@ -196,7 +202,7 @@ const WorkshopDetails = () => {
 
       {session.getters.getUser().admin && (
         <Fab
-          color="primary"
+          color="secondary"
           aria-label="delete"
           sx={{ position: "fixed", bottom: 16, right: 16 }}
           onClick={() => setDeleteDialogOpen(true)}
