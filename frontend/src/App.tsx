@@ -41,7 +41,7 @@ async function authenticate(): Promise<boolean> {
 
 function App() {
   useEffect(() => {
-    document.title = "CodeSprint - [app name]";
+    document.title = "PortWell";
   }, []);
 
   const [userInfoLoaded, setUserInfoLoaded] = useState(false);
