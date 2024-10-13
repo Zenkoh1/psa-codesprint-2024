@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import AnswerType from "../types/Answer.type";
+import AnswerType from "../../types/Answer.type";
 import {
   Avatar,
   Box,
@@ -9,11 +9,11 @@ import {
   TextareaAutosize,
   Typography,
 } from "@mui/material";
-import useAPI from "../api/useAPI";
-import session from "../api/sessions_manager";
-import UpvoteInfoType from "../types/UpvoteInfo.type";
+import useAPI from "../../api/useAPI";
+import session from "../../api/sessions_manager";
+import UpvoteInfoType from "../../types/UpvoteInfo.type";
 import { Favorite, FavoriteBorder } from "@mui/icons-material";
-import isAuthorised from "../utils/check_authorised";
+import isAuthorised from "../../utils/check_authorised";
 type AnswerProp = {
   answer: AnswerType;
   onDelete: () => void;

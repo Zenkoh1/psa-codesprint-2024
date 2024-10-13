@@ -1,7 +1,7 @@
 import { Avatar, Box, Chip, Stack, Typography } from "@mui/material";
-import QuestionType from "../types/Question.type";
+import QuestionType from "../../types/Question.type";
 import { useNavigate } from "react-router-dom";
-import CategoryType from "../types/Category.type";
+import CategoryType from "../../types/Category.type";
 
 type QuestionProp = {
   question: QuestionType;

@@ -1,8 +1,16 @@
-import { CardContent, Paper, Typography, Card } from "@mui/material";
+import {
+  CardContent,
+  Paper,
+  Typography,
+  Card,
+  Box,
+  IconButton,
+} from "@mui/material";
 import WorkshopType from "../../types/Workshop.type";
 import { useNavigate } from "react-router-dom";
 import useAPI from "../../api/useAPI";
 import { useEffect } from "react";
+import { ArrowForward } from "@mui/icons-material";
 
 const WorkshopCard = ({
   workshop,
@@ -54,10 +62,23 @@ const WorkshopsWidget = () => {
 
   return (
     <Paper elevation={2} sx={{ p: 2 }}>
-      <Typography variant="h6" gutterBottom>
-        Upcoming Workshops
-      </Typography>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <Typography variant="h6" gutterBottom>
+          Upcoming Workshops
+        </Typography>
+        <IconButton onClick={() => navigate("/workshops")} size="large">
+          <ArrowForward />
+        </IconButton>
+      </Box>
+
       {loadingWorkshops && <p>Loading workshops</p>}
+      {workshops?.length === 0 && <p>No workshops available</p>}
       {workshops
         ?.sort(
           (a: WorkshopType, b: WorkshopType) =>

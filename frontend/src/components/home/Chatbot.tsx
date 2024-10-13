@@ -1,4 +1,4 @@
-import { Send } from "@mui/icons-material";
+import { Send, Delete } from "@mui/icons-material";
 import MessageType from "../../types/Message.type";
 import {
   Box,
@@ -14,6 +14,25 @@ import React, { useContext, useState } from "react";
 import session from "../../api/sessions_manager";
 import axios from "axios";
 import { API_URL } from "../../api/useAPI";
+
+const PROMPT_SUGGESTIONS = [
+  {
+    title: "Summarize",
+    body: "Give me key points from my meeting notes",
+  },
+  {
+    title: "Draft",
+    body: "Write me an email to my boss",
+  },
+  {
+    title: "Brainstorm",
+    body: "Generate ideas for my teams upcoming project",
+  },
+  {
+    title: "Learn",
+    body: "Recommend me some workshops to attend",
+  },
+];
 
 const ChatbotMessage = ({ message }: { message: MessageType }) => {
   return (
@@ -39,24 +58,46 @@ const Chatbot = () => {
   const [inputValue, setInputValue] = useState("");
   const { isAuth } = useContext(session.SessionContext);
 
-  const PROMPT_SUGGESTIONS = [
-    {
-      title: "Explain",
-      body: "Quantim computing in simple terms",
-    },
-    {
-      title: "How to",
-      body: "Learn step by step guidese",
-    },
-    {
-      title: "Workshops",
-      body: "Upcoming workshops",
-    },
-    {
-      title: "Contact",
-      body: "Contact information",
-    },
-  ]; // aiya anything la
+  // Repeated code is bad code
+  const handlePromptSuggestion = async (promptBody: string) => {
+    setMessages([...messages, { sender: "user", text: promptBody }]);
+    try {
+      const user = session.getters.getUser();
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { sender: "model", text: "..." },
+      ]);
+      const response = await axios.post(
+        API_URL + "/api/v1/gemini/chatbot",
+        {
+          user_id: user.id,
+          messages: [{ sender: "user", text: promptBody }],
+        },
+        { headers: { "content-type": "application/json" } },
+      );
+
+      // Append the chatbot's response to messages
+      if (response.data?.response) {
+        setMessages((prevMessages) => [
+          ...prevMessages.slice(0, -1),
+          { sender: "model", text: response.data.response },
+        ]);
+      } else {
+        setMessages((prevMessages) => [
+          ...prevMessages.slice(0, -1),
+          { sender: "model", text: "Sorry, I didn't get that" },
+        ]);
+      }
+    } catch (error) {
+      setMessages((prevMessages) => [
+        ...prevMessages.slice(0, -1),
+        {
+          sender: "model",
+          text: "Sorry, I didn't get that, I might have ran out of tokens because I am free to use.",
+        },
+      ]);
+    }
+  };
 
   const handleSendMessage = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -137,6 +178,7 @@ const Chatbot = () => {
                       },
                     }}
                     elevation={2}
+                    onClick={() => handlePromptSuggestion(suggestion.body)}
                   >
                     <Typography variant="h6">{suggestion.title}</Typography>
                     <Typography variant="body1">{suggestion.body}</Typography>
@@ -167,10 +209,17 @@ const Chatbot = () => {
             type="submit"
             variant="contained"
             color="primary"
-            startIcon={<Send />}
-            sx={{ marginLeft: 2 }}
+            sx={{ marginLeft: 1 }}
           >
-            Send
+            <Send />
+          </Button>
+          <Button
+            onClick={() => setMessages([])}
+            variant="contained"
+            color="secondary"
+            sx={{ marginLeft: 1 }}
+          >
+            <Delete />
           </Button>
         </Box>
       </form>

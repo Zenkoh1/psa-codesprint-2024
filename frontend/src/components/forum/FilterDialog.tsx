@@ -1,7 +1,7 @@
 import { Button, Chip, Dialog, DialogTitle, Grid } from "@mui/material";
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import CategoryType from "../types/Category.type";
+import CategoryType from "../../types/Category.type";
 type FilterDialogProps = {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;

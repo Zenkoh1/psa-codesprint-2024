@@ -17,7 +17,10 @@ const Navbar = () => {
             component={RouterLink}
             to="/"
           >
-            PSA-Codesprint-2024
+            <img
+              src="https://www.singaporepsa.com/wp-content/uploads/2023/03/psa-singapore-logo-copy.png"
+              style={{ height: "20px" }}
+            />
           </Typography>
           {isAuth && (
             <Typography variant="h6">

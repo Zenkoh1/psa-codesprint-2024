@@ -14,7 +14,7 @@ import QuestionType from "../../types/Question.type";
 import { useNavigate, useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import AnswerType from "../../types/Answer.type";
-import Answer from "../../components/Answer";
+import Answer from "../../components/forum/Answer";
 import CategoryType from "../../types/Category.type";
 import session from "../../api/sessions_manager";
 import isAuthorised from "../../utils/check_authorised";

@@ -15,6 +15,7 @@ import CreateWorkshop from "./pages/workshops/CreateWorkshop";
 import Questionpage from "./pages/forum/Questionpage";
 import PostQuestionpage from "./pages/forum/PostQuestionpage";
 import Forumpage from "./pages/forum/Forumpage";
+import Calendar from "./pages/calendar/Calendar";
 
 /* Check if JWT_Token is stored and attempt to log the user in with that token */
 async function authenticate(): Promise<boolean> {
@@ -77,6 +78,7 @@ function App() {
             <Route path="/workshops" element={<Workshops />} />
             <Route path="/workshops/create" element={<CreateWorkshop />} />
             <Route path="/workshops/:id" element={<WorkshopDetails />} />
+            <Route path="/calendar" element={<Calendar />} />
           </Routes>
         </BrowserRouter>
       </div>

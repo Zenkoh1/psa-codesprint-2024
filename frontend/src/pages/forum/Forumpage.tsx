@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import useAPI from "../../api/useAPI";
-import Question from "../../components/Question";
+import Question from "../../components/forum/Question";
 import QuestionType from "../../types/Question.type";
 import {
   Box,
@@ -18,7 +18,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import CategoryType from "../../types/Category.type";
 import SearchIcon from "@mui/icons-material/Search";
 import Tune from "@mui/icons-material/Tune";
-import FilterDialog from "../../components/FilterDialog";
+import FilterDialog from "../../components/forum/FilterDialog";
 
 /* This is the forumpage where all the questions are displayed */
 const Forumpage = () => {
