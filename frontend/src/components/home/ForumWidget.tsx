@@ -1,9 +1,21 @@
-import { Box, IconButton, Paper, Typography } from "@mui/material";
+import { Box, Card, IconButton, Paper, Typography } from "@mui/material";
 import useAPI from "../../api/useAPI";
 import { useEffect } from "react";
 import QuestionType from "../../types/Question.type";
 import { useNavigate } from "react-router-dom";
 import { ArrowForward } from "@mui/icons-material";
+
+const categoryIcons = {
+  "Wellbeing & Mental Health": "🧠",
+  "Career Growth & Development": "🌱",
+  "Workplace Tips & Productivity": "🚀",
+  "Events & Workshops": "🎉",
+  "Team & Collaboration": "👥",
+  "Daily Wins & Motivation": "🏆",
+  "Feedback & Suggestions": "📝",
+  "Hobbies & Interests": "🎨",
+  "General Discussion": "💬",
+};
 
 const ForumCard = ({
   question,
@@ -12,13 +24,36 @@ const ForumCard = ({
   question: QuestionType;
   onClick: () => void;
 }) => {
+  const firstCategoryName = Object.values(
+    question?.categories,
+  )[0] as keyof typeof categoryIcons;
+
   return (
-    <Paper sx={{ p: 2, mb: 2 }} onClick={onClick}>
-      <Typography variant="h6">{question.title}</Typography>
-      <Typography variant="body2" color="textSecondary">
-        {question.author.username}
-      </Typography>
-    </Paper>
+    <Card
+      sx={{
+        padding: 2,
+        marginBottom: 2,
+        cursor: "pointer",
+        "&:hover": {
+          backgroundColor: "#f6f6f6",
+        },
+        backgroundColor: "#edf0f5",
+      }}
+      elevation={0}
+      onClick={onClick}
+    >
+      <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Box sx={{ marginRight: 3, marginLeft: 1 }}>
+          {categoryIcons[firstCategoryName]}
+        </Box>
+        <Box>
+          <Typography variant="h6">{question.title}</Typography>
+          <Typography variant="body2" color="textSecondary">
+            {question.author.username}
+          </Typography>
+        </Box>
+      </Box>
+    </Card>
   );
 };
 

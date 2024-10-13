@@ -167,7 +167,7 @@ const Chatbot = () => {
         {messages.length == 0 && (
           <Box>
             <Typography variant="h4" gutterBottom>
-              Good day! <br />
+              Hello {session.getters.getUser().username}! <br />
               How can I assist you today?
             </Typography>
             <Grid container spacing={2} sx={{ marginTop: 2 }}>

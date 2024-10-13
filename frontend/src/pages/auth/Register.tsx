@@ -1,10 +1,9 @@
-import { Button, Box } from "@mui/material";
+import { Button, Box, Typography, Card, CardContent } from "@mui/material";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import session from "../../api/sessions_manager";
 import FormTextField from "../../components/FormTextField";
 
-/* This page is for registering a new user */
 const Register = () => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
@@ -34,38 +33,69 @@ const Register = () => {
   };
 
   return (
-    <Box width="50vw" display="inline-block" px="25vw" textAlign="center">
-      <form autoComplete="off" onSubmit={handleSubmit}>
-        <h2>Registration Form</h2>
-        <FormTextField
-          input={username}
-          setInput={setUsername}
-          label="Username"
-        />
-        <FormTextField
-          input={email}
-          setInput={setEmail}
-          type="email"
-          label="Email"
-        />
-        <FormTextField
-          input={password}
-          setInput={setPassword}
-          type="password"
-          label="Password"
-        />
-        <FormTextField
-          input={confirmPassword}
-          setInput={setConfirmPassword}
-          type="password"
-          label="Confirm Password"
-          error={confirmPasswordError !== ""}
-          helperText={confirmPasswordError}
-        />
-        <Button variant="outlined" color="secondary" type="submit">
-          Register
-        </Button>
-      </form>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        height: "calc(100vh - 64px)",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundImage:
+          'url("https://www.singaporepsa.com/wp-content/uploads/2022/07/TiltShift_PP_2019_3-scaled-e1666939753382.jpg")',
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      <Card sx={{ width: "30vw", padding: 8, textAlign: "center" }}>
+        <CardContent>
+          <form autoComplete="off" onSubmit={handleSubmit}>
+            <Typography variant="h4" mb={3}>
+              Registration Form
+            </Typography>
+            <FormTextField
+              input={username}
+              setInput={setUsername}
+              label="Username"
+            />
+            <FormTextField
+              input={email}
+              setInput={setEmail}
+              type="email"
+              label="Email"
+            />
+            <FormTextField
+              input={password}
+              setInput={setPassword}
+              type="password"
+              label="Password"
+            />
+            <FormTextField
+              input={confirmPassword}
+              setInput={setConfirmPassword}
+              type="password"
+              label="Confirm Password"
+              error={confirmPasswordError !== ""}
+              helperText={confirmPasswordError}
+            />
+            <Button
+              variant="contained"
+              color="primary"
+              type="submit"
+              sx={{ width: "100%", mt: 2 }} // Makes the button wider
+            >
+              Register
+            </Button>
+            <Typography
+              variant="body2"
+              align="center"
+              sx={{ mt: 2, textDecoration: "underline", cursor: "pointer" }}
+              onClick={() => navigate("/login")} // Navigate to login page
+            >
+              Already have an account? Login
+            </Typography>
+          </form>
+        </CardContent>
+      </Card>
     </Box>
   );
 };

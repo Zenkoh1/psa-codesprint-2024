@@ -12,6 +12,7 @@ import useAPI from "../../api/useAPI";
 import { useEffect } from "react";
 import { ArrowForward } from "@mui/icons-material";
 import formatDate from "../../utils/formatDate";
+import { Event } from "@mui/icons-material";
 
 const WorkshopCard = ({
   workshop,
@@ -23,26 +24,26 @@ const WorkshopCard = ({
   return (
     <Card
       sx={{
-        mb: 2,
-        transition: "transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
+        padding: 2,
+        marginBottom: 2,
+        cursor: "pointer",
         "&:hover": {
-          transform: "scale(1.03)",
-          boxShadow: 3,
+          backgroundColor: "#f6f6f6",
         },
+        backgroundColor: "#edf0f5",
       }}
+      elevation={0}
       onClick={onClick}
     >
-      <CardContent>
-        <Typography variant="h6" gutterBottom>
-          {workshop.title}
-        </Typography>
-        <Typography variant="body2" color="textSecondary">
-          <strong>Date:</strong> {formatDate(workshop.start_time)}
-        </Typography>
-        <Typography variant="body2" color="textSecondary">
-          <strong>Location:</strong> {workshop.venue}
-        </Typography>
-      </CardContent>
+      <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Event sx={{ marginRight: 3, marginLeft: 1 }} />
+        <Box>
+          <Typography variant="h6">{workshop.title}</Typography>
+          <Typography variant="body2" color="textSecondary">
+            {formatDate(workshop.start_time)} at {workshop.venue}
+          </Typography>
+        </Box>
+      </Box>
     </Card>
   );
 };

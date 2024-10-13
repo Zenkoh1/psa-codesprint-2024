@@ -62,6 +62,23 @@ function App() {
     );
   }
 
+  if (!isAuth) {
+    return (
+      <session.SessionContext.Provider value={{ isAuth, setIsAuth }}>
+        <div className="App">
+          <BrowserRouter>
+            <Navbar />
+            <Routes>
+              <Route path="/" element={<Login />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+            </Routes>
+          </BrowserRouter>
+        </div>
+      </session.SessionContext.Provider>
+    );
+  }
+
   return (
     /* Provider exposes whether or not the user is authenticated to the application*/
     <session.SessionContext.Provider value={{ isAuth, setIsAuth }}>
