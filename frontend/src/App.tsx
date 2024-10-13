@@ -17,6 +17,7 @@ import PostQuestionpage from "./pages/forum/PostQuestionpage";
 import Forumpage from "./pages/forum/Forumpage";
 import Calendar from "./pages/calendar/Calendar";
 import AdminDashboard from "./pages/AdminDashboard";
+import RedirectToLogin from "./pages/RedirectToLogin";
 
 /* Check if JWT_Token is stored and attempt to log the user in with that token */
 async function authenticate(): Promise<boolean> {
@@ -72,6 +73,7 @@ function App() {
               <Route path="/" element={<Login />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="*" element={<RedirectToLogin />} />
             </Routes>
           </BrowserRouter>
         </div>
