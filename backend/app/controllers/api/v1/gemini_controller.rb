@@ -5,15 +5,28 @@ class Api::V1::GeminiController < ApplicationController
       |workshop| "- Title: #{workshop.title}, Description: #{workshop.description}, " + 
       "Start Time: #{workshop.start_time}, End Time: #{workshop.end_time}\n" }.join
     user = User.find(params[:user_id])
-    user_description = user.job_description || ""
     user_name = user.username || ""
+    if user_name != ""
+      user_name = "My name is #{user_name}. "
+    end
+    user_description = user.job_description || ""
+    if user_description != ""
+      user_description = "My job is about #{user_description}. "
+    end
+    user_emotion = user.wellbeing&.emotion || ""
+    if user_emotion != ""
+      user_emotion = "On a scale of 1 to 5, where 1 is very sad and 5 is happy, I am #{user_emotion}. "
+    end
+    user_stress = user.wellbeing&.stress || ""
+    if user_stress != ""
+      user_stress = "On a scale of 1 to 5, where 1 is very stressed and 5 is relaxed, I am #{user_stress}. "
+    end
     client = GeminiAi::Client.new
     result = client.generate_content(
       {
         contents: [
           [{ role: 'user', parts: { text: "I am going to provide information for you to use in this conversation" + 
-           "My name is #{user_name}, " +
-           "My job is about" + user_description +
+           "#{user_name}#{user_description}#{user_emotion}#{user_stress}" +
            "The workshops available are \n#{workshops}" +
            "Only remember the data that I provide you, do not remember or mention that I provided you with this data"
            }} 
@@ -37,7 +50,7 @@ class Api::V1::GeminiController < ApplicationController
       "from the list above that you recommend me to attend, in JSON format. Don't include a \\n at the end of the JSON." + 
       "If you don't recommend any workshop, return an empty array." +
       "Recommend me a maximum of 3 workshops, ranked in order of preference."
-    print(message)
+
     result = client.generate_content(
       {
         contents: {

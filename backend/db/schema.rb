@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_10_12_181711) do
+ActiveRecord::Schema[7.1].define(version: 2024_10_13_063655) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -108,6 +108,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_12_181711) do
     t.index ["voter_type", "voter_id"], name: "index_votes_on_voter"
   end
 
+  create_table "wellbeings", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.integer "emotion"
+    t.integer "stress"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_wellbeings_on_user_id"
+  end
+
   create_table "workshops", force: :cascade do |t|
     t.string "title"
     t.bigint "host_id", null: false
@@ -125,5 +134,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_12_181711) do
   add_foreign_key "events", "users"
   add_foreign_key "events", "workshops"
   add_foreign_key "questions", "users", column: "author_id", on_delete: :cascade
+  add_foreign_key "wellbeings", "users"
   add_foreign_key "workshops", "users", column: "host_id", on_delete: :cascade
 end
