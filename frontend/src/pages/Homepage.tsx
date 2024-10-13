@@ -1,4 +1,4 @@
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 
 import Chatbot from "../components/home/Chatbot";
 import CalendarWidget from "../components/home/CalendarWidget";

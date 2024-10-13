@@ -14,6 +14,7 @@ import React, { useContext, useState } from "react";
 import session from "../../api/sessions_manager";
 import axios from "axios";
 import { API_URL } from "../../api/useAPI";
+import Wellbeing from "./Wellbeing";
 
 const PROMPT_SUGGESTIONS = [
   {
@@ -56,11 +57,16 @@ const ChatbotMessage = ({ message }: { message: MessageType }) => {
 const Chatbot = () => {
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [inputValue, setInputValue] = useState("");
+  const [showRating, setShowRating] = useState(true);
   const { isAuth } = useContext(session.SessionContext);
 
   // Repeated code is bad code
-  const handlePromptSuggestion = async (promptBody: string) => {
-    setMessages([...messages, { sender: "user", text: promptBody }]);
+  const handlePromptSuggestion = async (
+    promptBody: string,
+    saveMessage: boolean,
+  ) => {
+    if (saveMessage)
+      setMessages([...messages, { sender: "user", text: promptBody }]);
     try {
       const user = session.getters.getUser();
       setMessages((prevMessages) => [
@@ -149,42 +155,59 @@ const Chatbot = () => {
   return (
     <Container
       sx={{
-        marginTop: 5,
         padding: 2,
-        height: "70vh",
+        height: "80vh",
         display: "flex",
         flexDirection: "column",
         pointerEvents: isAuth ? "all" : "none",
         opacity: isAuth ? 1 : 0.5,
       }}
     >
-      <Box sx={{ flex: 1, overflowY: "auto", marginBottom: 2, padding: 2 }}>
+      <Box sx={{ flex: 1, overflowY: "auto", padding: 2 }}>
         {messages.length == 0 && (
-          <Box sx={{ marginTop: 5 }}>
+          <Box>
             <Typography variant="h4" gutterBottom>
               Good day! <br />
               How can I assist you today?
             </Typography>
-            <Grid container spacing={2} sx={{ marginTop: 5 }}>
-              {PROMPT_SUGGESTIONS.map((suggestion, index) => (
-                <Grid item xs={12} sm={6} key={index}>
-                  <Card
-                    sx={{
-                      padding: 2,
-                      marginBottom: 2,
-                      cursor: "pointer",
-                      "&:hover": {
-                        backgroundColor: "#f1f1f1",
-                      },
+            <Grid container spacing={2} sx={{ marginTop: 2 }}>
+              {showRating && (
+                <Grid item xs={24} sm={12} sx={{ marginBottom: 2 }}>
+                  <Wellbeing
+                    onClose={({ emotion, stress }) => {
+                      if (emotion !== -1 && stress !== -1) {
+                        handlePromptSuggestion(
+                          `The user is feeling emotion ${emotion} out of 5 (5 is happiest), and stress ${stress} out of 5 (1 is most stressed). Please assist.`,
+                          false,
+                        );
+                      }
+                      setShowRating(false);
                     }}
-                    elevation={2}
-                    onClick={() => handlePromptSuggestion(suggestion.body)}
-                  >
-                    <Typography variant="h6">{suggestion.title}</Typography>
-                    <Typography variant="body1">{suggestion.body}</Typography>
-                  </Card>
+                  />
                 </Grid>
-              ))}
+              )}
+              {!showRating &&
+                PROMPT_SUGGESTIONS.map((suggestion, index) => (
+                  <Grid item xs={12} sm={6} key={index}>
+                    <Card
+                      sx={{
+                        padding: 2,
+                        marginBottom: 2,
+                        cursor: "pointer",
+                        "&:hover": {
+                          backgroundColor: "#f1f1f1",
+                        },
+                      }}
+                      elevation={2}
+                      onClick={() =>
+                        handlePromptSuggestion(suggestion.body, true)
+                      }
+                    >
+                      <Typography variant="h6">{suggestion.title}</Typography>
+                      <Typography variant="body1">{suggestion.body}</Typography>
+                    </Card>
+                  </Grid>
+                ))}
             </Grid>
           </Box>
         )}
