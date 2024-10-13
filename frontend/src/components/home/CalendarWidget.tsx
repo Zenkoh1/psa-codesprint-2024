@@ -91,7 +91,9 @@ const CalendarWidget = () => {
             highlightedDays: calendarEventData?.reduce((acc, event) => {
               // Gets all dates between start and end date
               const start = new Date(event.start_time);
+              start.setHours(0, 0, 0, 0);
               const end = new Date(event.end_time);
+              end.setHours(23, 59, 59, 999);
               const days = [];
               for (let d = start; d <= end; d.setDate(d.getDate() + 1)) {
                 days.push(new Date(d));
