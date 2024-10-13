@@ -50,6 +50,15 @@ const Navbar = () => {
             </Stack>
           ) : (
             <Stack spacing={2} direction="row">
+              {session.getters.getUser().admin && (
+                <Button
+                  variant="contained"
+                  component={RouterLink}
+                  to="/admin_dashboard"
+                >
+                  Admin Dashboard
+                </Button>
+              )}
               <Button
                 variant="contained"
                 color="secondary"

@@ -16,6 +16,7 @@ import Questionpage from "./pages/forum/Questionpage";
 import PostQuestionpage from "./pages/forum/PostQuestionpage";
 import Forumpage from "./pages/forum/Forumpage";
 import Calendar from "./pages/calendar/Calendar";
+import AdminDashboard from "./pages/AdminDashboard";
 
 /* Check if JWT_Token is stored and attempt to log the user in with that token */
 async function authenticate(): Promise<boolean> {
@@ -79,6 +80,8 @@ function App() {
             <Route path="/workshops/create" element={<CreateWorkshop />} />
             <Route path="/workshops/:id" element={<WorkshopDetails />} />
             <Route path="/calendar" element={<Calendar />} />
+            {/* TODO: Add a guard to prevent non-admin users from accessing this route */}
+            <Route path="/admin_dashboard" element={<AdminDashboard />} />
           </Routes>
         </BrowserRouter>
       </div>
