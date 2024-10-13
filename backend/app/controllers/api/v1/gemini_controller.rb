@@ -5,21 +5,21 @@ class Api::V1::GeminiController < ApplicationController
       |workshop| "- Title: #{workshop.title}, Description: #{workshop.description}, " + 
       "Start Time: #{workshop.start_time}, End Time: #{workshop.end_time}\n" }.join
     user = User.find(params[:user_id])
-    user_name = user.name || ""
+    user_name = user.username || ""
     if user_name != ""
-      user_name = "My name is " + user_name + ". "
+      user_name = "My name is #{user_name}. "
     end
     user_description = user.job_description || ""
     if user_description != ""
-      user_description = "My job is about " + user_description + ". "
+      user_description = "My job is about #{user_description}. "
     end
     user_emotion = user.wellbeing&.emotion || ""
     if user_emotion != ""
-      user_emotion = "On a scale of 1 to 5, where 1 is very sad and 5 is happy, I am " + user_emotion + ". "
+      user_emotion = "On a scale of 1 to 5, where 1 is very sad and 5 is happy, I am #{user_emotion}. "
     end
     user_stress = user.wellbeing&.stress || ""
     if user_stress != ""
-      user_stress = "On a scale of 1 to 5, where 1 is very stressed and 5 is relaxed, I am " + user_stress + ". "
+      user_stress = "On a scale of 1 to 5, where 1 is very stressed and 5 is relaxed, I am #{user_stress}. "
     end
     client = GeminiAi::Client.new
     result = client.generate_content(
