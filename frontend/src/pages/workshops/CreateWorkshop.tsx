@@ -73,7 +73,7 @@ const CreateWorkshop = () => {
     if (formData.start_time > formData.end_time) {
       setFormData({
         ...formData,
-        end_time: new Date(formData.start_time.getTime() + 60 * 60 * 1000),
+        end_time: new Date(formData.start_time.getTime() + 60 * 1000),
       });
     }
   }, [formData.start_time]);
@@ -82,7 +82,7 @@ const CreateWorkshop = () => {
     if (formData.end_time < formData.start_time) {
       setFormData({
         ...formData,
-        start_time: new Date(formData.end_time.getTime() - 60 * 60 * 1000),
+        start_time: new Date(formData.end_time.getTime() - 60 * 1000),
       });
     }
   }, [formData.end_time]);
@@ -127,7 +127,7 @@ const CreateWorkshop = () => {
               required
             />
           </Grid>
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={6}>
             <DateTimePicker
               label="Start time"
               viewRenderers={{
@@ -144,9 +144,10 @@ const CreateWorkshop = () => {
                   });
                 }
               }}
+              sx={{ width: "100%" }} // Ensure full width
             />
           </Grid>
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={6}>
             <DateTimePicker
               label="End time"
               viewRenderers={{
@@ -163,6 +164,7 @@ const CreateWorkshop = () => {
                   });
                 }
               }}
+              sx={{ width: "100%" }} // Ensure full width
             />
           </Grid>
         </Grid>

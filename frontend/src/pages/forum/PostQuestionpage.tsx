@@ -76,7 +76,7 @@ const PostQuestionpage = () => {
           renderInput={(params) => <TextField {...params} label="Categories" />}
           fullWidth
         />
-        <Button variant="outlined" color="secondary" type="submit">
+        <Button variant="outlined" color="primary" type="submit">
           Submit
         </Button>
       </form>
