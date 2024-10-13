@@ -164,7 +164,7 @@ const Answer = ({ answer, onDelete: onDeleteParent }: AnswerProp) => {
       <Box sx={{ m: 1 }}>
         <Stack spacing={0.5} direction="column" alignItems="start">
           <Stack spacing={2} direction="row" alignItems="center">
-            <Avatar sx={{ bgcolor: "secondary.main" }}>
+            <Avatar sx={{ bgcolor: "primary.main" }}>
               {answer.author.username?.at(0)}
             </Avatar>
             <Stack direction="column" alignItems="start">
