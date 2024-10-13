@@ -76,7 +76,7 @@ const Wellbeing = ({
                   Rate
                 </Button>
                 <Button
-                  variant="outlined"
+                  variant="contained"
                   color="secondary"
                   onClick={() => onClose({ emotion: -1, stress: -1 })}
                 >

@@ -196,7 +196,7 @@ const WorkshopDetails = () => {
 
       {session.getters.getUser().admin && (
         <Fab
-          color="secondary"
+          color="primary"
           aria-label="delete"
           sx={{ position: "fixed", bottom: 16, right: 16 }}
           onClick={() => setDeleteDialogOpen(true)}

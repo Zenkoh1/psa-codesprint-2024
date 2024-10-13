@@ -5,18 +5,6 @@ import QuestionType from "../../types/Question.type";
 import { useNavigate } from "react-router-dom";
 import { ArrowForward } from "@mui/icons-material";
 
-const categoryIcons = {
-  "Wellbeing & Mental Health": "🧠",
-  "Career Growth & Development": "🌱",
-  "Workplace Tips & Productivity": "🚀",
-  "Events & Workshops": "🎉",
-  "Team & Collaboration": "👥",
-  "Daily Wins & Motivation": "🏆",
-  "Feedback & Suggestions": "📝",
-  "Hobbies & Interests": "🎨",
-  "General Discussion": "💬",
-};
-
 const ForumCard = ({
   question,
   onClick,
@@ -24,10 +12,6 @@ const ForumCard = ({
   question: QuestionType;
   onClick: () => void;
 }) => {
-  const firstCategoryName = Object.values(
-    question?.categories,
-  )[0] as keyof typeof categoryIcons;
-
   return (
     <Card
       sx={{
@@ -42,16 +26,11 @@ const ForumCard = ({
       elevation={0}
       onClick={onClick}
     >
-      <Box sx={{ display: "flex", alignItems: "center" }}>
-        <Box sx={{ marginRight: 3, marginLeft: 1 }}>
-          {categoryIcons[firstCategoryName]}
-        </Box>
-        <Box>
-          <Typography variant="h6">{question.title}</Typography>
-          <Typography variant="body2" color="textSecondary">
-            {question.author.username}
-          </Typography>
-        </Box>
+      <Box>
+        <Typography variant="h6">{question.title}</Typography>
+        <Typography variant="body2" color="textSecondary">
+          {question.author.username}
+        </Typography>
       </Box>
     </Card>
   );
@@ -87,6 +66,9 @@ const ForumWidget = () => {
         </IconButton>
       </Box>
       {loadingQuestions && <p>Loading questions</p>}
+      {dataQuestions && Object.values(dataQuestions).length == 0 && (
+        <p>No forum posts yet</p>
+      )}
       {dataQuestions &&
         Object.values(dataQuestions)
           .sort(

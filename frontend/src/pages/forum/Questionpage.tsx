@@ -139,7 +139,7 @@ const Questionpage = () => {
                 fontSize: 28,
                 width: 55,
                 height: 55,
-                bgcolor: "secondary.main",
+                bgcolor: "primary.main",
               }}
             >
               {question?.author.username?.at(0)}

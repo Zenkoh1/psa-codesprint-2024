@@ -17,7 +17,7 @@ const Question = ({ question }: QuestionProp) => {
     >
       <Stack spacing={0.5} direction="column" alignItems="start">
         <Stack spacing={2} direction="row" alignItems="center">
-          <Avatar sx={{ bgcolor: "secondary.main" }}>
+          <Avatar sx={{ bgcolor: "primary.main" }}>
             {question.author.username?.at(0)}
           </Avatar>
           <Stack direction="column" alignItems="start">

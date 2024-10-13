@@ -79,13 +79,9 @@ const WorkshopsWidget = () => {
       </Box>
 
       {loadingWorkshops && <p>Loading workshops</p>}
-      {workshops?.length === 0 && <p>No workshops available</p>}
+      {workshops?.length === 0 && <p>No workshops yet</p>}
       {workshops
-        ?.filter(
-          (workshop: WorkshopType) =>
-            new Date(workshop.start_time) > new Date(),
-        )
-        .sort(
+        ?.sort(
           (a: WorkshopType, b: WorkshopType) =>
             new Date(a.start_time).getTime() - new Date(b.start_time).getTime(),
         )
