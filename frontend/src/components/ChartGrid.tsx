@@ -1,4 +1,4 @@
-import { Grid, Card, Typography } from "@mui/material";
+import { Grid, Card, Typography, Box } from "@mui/material";
 import { ReactNode } from "react";
 
 type ChartGridProps = {
@@ -8,7 +8,7 @@ type ChartGridProps = {
 
 const ChartGrid = ({ title, children }: ChartGridProps) => {
   return (
-    <Grid item xs={6} md={4}>
+    <Grid item xs={6} md={4} textAlign="center">
       <Card
         sx={{
           mb: 2,
@@ -22,7 +22,9 @@ const ChartGrid = ({ title, children }: ChartGridProps) => {
         <Typography variant="h5" pt={2} textAlign="center">
           {title}
         </Typography>
-        {children}
+        <Box display="flex " textAlign="center">
+          {children}
+        </Box>
       </Card>
     </Grid>
   );

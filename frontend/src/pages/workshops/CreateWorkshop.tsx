@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, TextField, Typography, Grid } from "@mui/material";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import { renderTimeViewClock } from "@mui/x-date-pickers/timeViewRenderers";
@@ -12,7 +12,7 @@ const CreateWorkshop = () => {
     title: "",
     description: "",
     start_time: new Date(),
-    end_time: new Date(),
+    end_time: new Date(new Date().getTime() + 60 * 60 * 1000),
     venue: "",
   });
 
@@ -45,6 +45,10 @@ const CreateWorkshop = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (formData.start_time > formData.end_time) {
+      alert("End time must be after start time");
+      return;
+    }
     try {
       await createWorkshop();
       // Redirect back to workshops page after successful creation
@@ -64,6 +68,24 @@ const CreateWorkshop = () => {
       </Box>
     );
   }
+
+  useEffect(() => {
+    if (formData.start_time > formData.end_time) {
+      setFormData({
+        ...formData,
+        end_time: new Date(formData.start_time.getTime() + 60 * 60 * 1000),
+      });
+    }
+  }, [formData.start_time]);
+
+  useEffect(() => {
+    if (formData.end_time < formData.start_time) {
+      setFormData({
+        ...formData,
+        start_time: new Date(formData.end_time.getTime() - 60 * 60 * 1000),
+      });
+    }
+  }, [formData.end_time]);
 
   // TODO: Make this side by side
   return (

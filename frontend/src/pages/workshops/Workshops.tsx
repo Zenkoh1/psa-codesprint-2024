@@ -10,6 +10,7 @@ import {
   Typography,
   Divider,
   Fab,
+  CircularProgress,
 } from "@mui/material";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
@@ -142,7 +143,7 @@ const WorkshopsPage = () => {
           size="small"
         />
       </form>
-      {loadingWorkshops && <p> Loading workshops ... </p>}
+      {loadingWorkshops && <CircularProgress />}
       {!loadingWorkshops && (
         <Stack
           divider={<Divider orientation="horizontal" flexItem />}

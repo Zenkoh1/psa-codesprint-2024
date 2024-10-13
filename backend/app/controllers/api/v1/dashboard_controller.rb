@@ -35,5 +35,14 @@ class Api::V1::DashboardController < ApplicationController
     render json: average_workshops_registrations_per_month_sorted_filtered
   end
 
+  def get_user_count
+    user_count = User.count
+    render json: {count: user_count}
+  end
+
+  def get_forum_post_count
+    forum_post_count = Question.count
+    render json: {count: forum_post_count}
+  end
 
 end

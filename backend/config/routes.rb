@@ -49,6 +49,8 @@ Rails.application.routes.draw do
       get '/dashboard/get_user_emotions_count', to: 'dashboard#get_user_emotions_count'
       get '/dashboard/get_user_stress_count', to: 'dashboard#get_user_stress_count'
       get '/dashboard/get_monthly_average_workshop_registrations', to: 'dashboard#get_monthly_average_workshop_registrations'
+      get '/dashboard/get_user_count', to: 'dashboard#get_user_count'
+      get '/dashboard/get_forum_post_count', to: 'dashboard#get_forum_post_count'
     end
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

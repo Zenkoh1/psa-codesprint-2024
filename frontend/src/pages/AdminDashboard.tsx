@@ -8,6 +8,7 @@ import { WorkshopPerMonth } from "../types/charttypes/WorkshopPerMonth.type";
 import { EmotionCount } from "../types/charttypes/EmotionCount.type";
 import { StressCount } from "../types/charttypes/StressCount.type";
 import { WorkshopRegistrationsPerMonth } from "../types/charttypes/WorkshopRegistrationsPerMonth.type";
+import { GenericCount } from "../types/charttypes/GenericCount.type";
 
 const AdminDashboard = () => {
   const { fetchAPI: fetchWorkshopsAPI, data: dataWorkshops } =
@@ -25,11 +26,19 @@ const AdminDashboard = () => {
     "/api/v1/dashboard/get_monthly_average_workshop_registrations",
   );
 
+  const { fetchAPI: fetchUserCountAPI, data: dataUserCount } =
+    useAPI<GenericCount>("/api/v1/dashboard/get_user_count");
+
+  const { fetchAPI: fetchForumPostCountAPI, data: dataForumPostCount } =
+    useAPI<GenericCount>("/api/v1/dashboard/get_forum_post_count");
+
   useEffect(() => {
     fetchWorkshopsAPI();
     fetchEmotionsCountAPI();
     fetchStressCountAPI();
     fetchWorkshopRegistrationsAPI();
+    fetchUserCountAPI();
+    fetchForumPostCountAPI();
   }, []);
 
   const pieChartEmotion = [
@@ -109,6 +118,38 @@ const AdminDashboard = () => {
               width={400}
               height={300}
             />
+          </ChartGrid>
+        )}
+        {dataUserCount && (
+          <ChartGrid title="Total User Count">
+            <Typography
+              variant="h1"
+              display={"flex"}
+              justifyContent={"center"}
+              alignItems={"center"}
+              minWidth={400}
+              minHeight={300}
+              height={"100%"}
+              width={"100%"}
+            >
+              {dataUserCount.count}
+            </Typography>
+          </ChartGrid>
+        )}
+        {dataForumPostCount && (
+          <ChartGrid title="Total Forum Post Count">
+            <Typography
+              variant="h1"
+              display={"flex"}
+              justifyContent={"center"}
+              alignItems={"center"}
+              minWidth={400}
+              minHeight={300}
+              height={"100%"}
+              width={"100%"}
+            >
+              {dataForumPostCount.count}
+            </Typography>
           </ChartGrid>
         )}
       </Grid>

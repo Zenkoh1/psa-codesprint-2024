@@ -52,9 +52,31 @@ const CalendarPage = () => {
     fetchAPI();
   }, []);
 
+  useEffect(() => {
+    if (formData.start_time > formData.end_time) {
+      setFormData({
+        ...formData,
+        end_time: new Date(formData.start_time.getTime() + 60 * 60 * 1000),
+      });
+    }
+  }, [formData.start_time]);
+
+  useEffect(() => {
+    if (formData.end_time < formData.start_time) {
+      setFormData({
+        ...formData,
+        start_time: new Date(formData.end_time.getTime() - 60 * 60 * 1000),
+      });
+    }
+  }, [formData.end_time]);
+
   // Handle event creation
   const handleCreateEvent = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (formData.start_time > formData.end_time) {
+      alert("End time must be after start time");
+      return;
+    }
     if (formData.title) {
       createEvent();
       fetchAPI();
