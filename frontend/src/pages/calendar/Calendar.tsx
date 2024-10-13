@@ -17,8 +17,10 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { DateTimePicker, renderTimeViewClock } from "@mui/x-date-pickers";
+import { useNavigate } from "react-router-dom";
 
 const CalendarPage = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     title: "",
     start_time: new Date(),
@@ -65,10 +67,16 @@ const CalendarPage = () => {
   };
 
   // Get today's events
-  const todayEvents = calendarEventData?.filter(
-    (event) =>
-      new Date(event.start_time).toDateString() === new Date().toDateString(),
-  );
+  const todayEvents = calendarEventData
+    ?.filter(
+      (event) =>
+        new Date(event.start_time).toDateString() === new Date().toDateString(),
+    )
+    .sort((a, b) => {
+      return (
+        new Date(a.start_time).getTime() - new Date(b.start_time).getTime()
+      );
+    });
 
   return (
     <Box
@@ -96,10 +104,20 @@ const CalendarPage = () => {
                 center: "title",
                 right: "dayGridMonth,timeGridWeek", // Button for week view
               }}
+              eventClick={(info) => {
+                if (info.event.extendedProps.workshop_id) {
+                  // Redirect to the workshop page
+
+                  navigate(
+                    `/workshops/${info.event.extendedProps.workshop_id}`,
+                  );
+                }
+              }}
               events={calendarEventData?.map((event) => ({
                 title: event.title,
                 start: event.start_time,
                 end: event.end_time,
+                workshop_id: event.workshop_id,
               }))}
             />
           </Paper>

@@ -6,6 +6,7 @@ export const API_URL = process.env.REACT_APP_API_ENDPOINT;
 const useAPI = <T>(
   pathname: string,
   options?: AxiosRequestConfig,
+  showError = true,
   p0?: { user_id: number },
 ) => {
   const [loading, setLoading] = useState(true);
@@ -18,7 +19,9 @@ const useAPI = <T>(
       setLoading(false);
       console.log("API call to:", pathname, "\n", data);
     } catch (error) {
-      alert("Error fetching data");
+      if (showError) {
+        alert("Error fetching data");
+      }
     }
   };
 

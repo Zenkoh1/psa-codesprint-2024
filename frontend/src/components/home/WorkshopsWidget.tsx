@@ -80,7 +80,11 @@ const WorkshopsWidget = () => {
       {loadingWorkshops && <p>Loading workshops</p>}
       {workshops?.length === 0 && <p>No workshops available</p>}
       {workshops
-        ?.sort(
+        ?.filter(
+          (workshop: WorkshopType) =>
+            new Date(workshop.start_time) > new Date(),
+        )
+        .sort(
           (a: WorkshopType, b: WorkshopType) =>
             new Date(a.start_time).getTime() - new Date(b.start_time).getTime(),
         )
