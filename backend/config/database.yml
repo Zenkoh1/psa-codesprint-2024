@@ -30,3 +30,4 @@ production:
   <<: *default
   #database: storage/production.sqlite3
   database: codesprint_database_production
+  url: <%= ENV['DATABASE_URL'] %>
