@@ -4,12 +4,11 @@ import {
   AppBar,
   Toolbar,
   Typography,
-  Button,
   Stack,
   IconButton,
   Avatar,
 } from "@mui/material";
-import { School, Chat, Event } from "@mui/icons-material";
+import { School, Chat, Event, SupervisorAccount } from "@mui/icons-material";
 import session from "../api/sessions_manager";
 
 const Navbar = () => {
@@ -41,6 +40,11 @@ const Navbar = () => {
             <IconButton component={RouterLink} to="/calendar">
               <Event />
             </IconButton>
+            {isAuth && session.getters.getUser().admin && (
+              <IconButton component={RouterLink} to="/admin_dashboard">
+                <SupervisorAccount />
+              </IconButton>
+            )}
           </Stack>
           {/*isAuth && (
             <Typography variant="h6">

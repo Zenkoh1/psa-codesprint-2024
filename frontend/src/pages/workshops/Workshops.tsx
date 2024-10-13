@@ -75,6 +75,8 @@ const WorkshopsPage = () => {
     data: recommendations,
   } = useAPI<Array<WorkshopType>>(
     `/api/v1/gemini/recommend_workshops?user_id=${session.getters.getUser().id}`,
+    undefined,
+    false,
   );
 
   const [filteredData, setFilteredData] = useState<Array<WorkshopType>>();
@@ -84,7 +86,9 @@ const WorkshopsPage = () => {
 
   useEffect(() => {
     fetchWorkshops();
-    fetchRecommendations();
+    fetchRecommendations().catch(() => {
+      // Do nothing if recommendations fail to load
+    });
   }, []);
 
   // Trigger filtering when the search params change

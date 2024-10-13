@@ -11,6 +11,8 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  CircularProgress,
+  Stack,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Link as RouterLink } from "react-router-dom";
@@ -97,7 +99,7 @@ const WorkshopDetails = () => {
       unregisterWorkshop()
         .then(() => {
           setRegisterStatus({ registered: false });
-          alert("Registered successfully!");
+          alert("Unregistered successfully!");
         })
         .catch(() => {
           alert("Error registering, try logging in!");
@@ -125,12 +127,16 @@ const WorkshopDetails = () => {
       });
   };
 
-  if (!workshop) {
-    return <Box py={5}>Workshop not found</Box>;
+  if (loadingWorkshop) {
+    return (
+      <Stack alignItems="center">
+        <CircularProgress />
+      </Stack>
+    );
   }
 
-  if (loadingWorkshop) {
-    return <Box py={5}>Loading workshop</Box>;
+  if (!workshop) {
+    return <Box py={5}>Workshop not found</Box>;
   }
 
   return (
