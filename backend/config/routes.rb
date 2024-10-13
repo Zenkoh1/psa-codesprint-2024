@@ -37,6 +37,13 @@ Rails.application.routes.draw do
           get "get_user_events", to: "events#get_user_events"
         end
       end
+
+      resources :wellbeings do
+        collection do
+          put "update_user_wellbeing", to: "wellbeings#update_user_wellbeing"
+          get "get_user_wellbeing", to: "wellbeings#get_user_wellbeing"
+        end
+      end
     end
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
