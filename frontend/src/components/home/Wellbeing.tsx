@@ -15,10 +15,31 @@ import {
   SentimentSatisfied,
   SentimentVerySatisfied,
 } from "@mui/icons-material";
+import useAPI from "../../api/useAPI";
+import session from "../../api/sessions_manager";
 
-const Wellbeing = () => {
+const Wellbeing = ({
+  onClose,
+}: {
+  onClose: ({ emotion, stress }: { emotion: number; stress: number }) => void;
+}) => {
   const [emotionLevel, setEmotionLevel] = useState(3); // Default to neutral
   const [stressLevel, setStressLevel] = useState(3); // Default to neutral
+
+  const { fetchAPI: submitWellbeing } = useAPI(
+    "/api/v1/wellbeings/update_user_wellbeing",
+    {
+      method: "PUT",
+      data: {
+        emotion: emotionLevel,
+        stress: stressLevel,
+        user_id: session.getters.getUser().id,
+      },
+      headers: {
+        "content-type": "application/json",
+      },
+    },
+  );
 
   return (
     <Card elevation={2} sx={{ p: 4 }}>
@@ -47,14 +68,17 @@ const Wellbeing = () => {
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={() => alert("Thank you for your feedback!")}
+                  onClick={() => {
+                    submitWellbeing();
+                    onClose({ emotion: emotionLevel, stress: stressLevel });
+                  }}
                 >
                   Rate
                 </Button>
                 <Button
                   variant="outlined"
                   color="secondary"
-                  onClick={() => alert("No worries, take care!")}
+                  onClick={() => onClose({ emotion: -1, stress: -1 })}
                 >
                   No thanks
                 </Button>

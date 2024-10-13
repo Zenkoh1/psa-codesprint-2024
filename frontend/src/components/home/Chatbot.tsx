@@ -57,11 +57,16 @@ const ChatbotMessage = ({ message }: { message: MessageType }) => {
 const Chatbot = () => {
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [inputValue, setInputValue] = useState("");
+  const [showRating, setShowRating] = useState(true);
   const { isAuth } = useContext(session.SessionContext);
 
   // Repeated code is bad code
-  const handlePromptSuggestion = async (promptBody: string) => {
-    setMessages([...messages, { sender: "user", text: promptBody }]);
+  const handlePromptSuggestion = async (
+    promptBody: string,
+    saveMessage: boolean,
+  ) => {
+    if (saveMessage)
+      setMessages([...messages, { sender: "user", text: promptBody }]);
     try {
       const user = session.getters.getUser();
       setMessages((prevMessages) => [
@@ -151,7 +156,7 @@ const Chatbot = () => {
     <Container
       sx={{
         padding: 2,
-        height: "90vh",
+        height: "80vh",
         display: "flex",
         flexDirection: "column",
         pointerEvents: isAuth ? "all" : "none",
@@ -166,28 +171,43 @@ const Chatbot = () => {
               How can I assist you today?
             </Typography>
             <Grid container spacing={2} sx={{ marginTop: 2 }}>
-              <Grid item xs={24} sm={12} sx={{ marginBottom: 2 }}>
-                <Wellbeing />
-              </Grid>
-              {PROMPT_SUGGESTIONS.map((suggestion, index) => (
-                <Grid item xs={12} sm={6} key={index}>
-                  <Card
-                    sx={{
-                      padding: 2,
-                      marginBottom: 2,
-                      cursor: "pointer",
-                      "&:hover": {
-                        backgroundColor: "#f1f1f1",
-                      },
+              {showRating && (
+                <Grid item xs={24} sm={12} sx={{ marginBottom: 2 }}>
+                  <Wellbeing
+                    onClose={({ emotion, stress }) => {
+                      if (emotion !== -1 && stress !== -1) {
+                        handlePromptSuggestion(
+                          `The user is feeling emotion ${emotion} out of 5 (5 is happiest), and stress ${stress} out of 5 (1 is most stressed). Please assist.`,
+                          false,
+                        );
+                      }
+                      setShowRating(false);
                     }}
-                    elevation={2}
-                    onClick={() => handlePromptSuggestion(suggestion.body)}
-                  >
-                    <Typography variant="h6">{suggestion.title}</Typography>
-                    <Typography variant="body1">{suggestion.body}</Typography>
-                  </Card>
+                  />
                 </Grid>
-              ))}
+              )}
+              {!showRating &&
+                PROMPT_SUGGESTIONS.map((suggestion, index) => (
+                  <Grid item xs={12} sm={6} key={index}>
+                    <Card
+                      sx={{
+                        padding: 2,
+                        marginBottom: 2,
+                        cursor: "pointer",
+                        "&:hover": {
+                          backgroundColor: "#f1f1f1",
+                        },
+                      }}
+                      elevation={2}
+                      onClick={() =>
+                        handlePromptSuggestion(suggestion.body, true)
+                      }
+                    >
+                      <Typography variant="h6">{suggestion.title}</Typography>
+                      <Typography variant="body1">{suggestion.body}</Typography>
+                    </Card>
+                  </Grid>
+                ))}
             </Grid>
           </Box>
         )}
