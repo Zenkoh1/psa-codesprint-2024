@@ -32,7 +32,6 @@
 # Ignore master key for decrypting credentials and more.
 # For ease of use, this file is *not* .gitignore'd
 /config/master.key
-/config/credentials.yml.enc
 
 # Ignore .env file containing credentials.
 /.env*
