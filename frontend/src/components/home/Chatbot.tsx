@@ -14,6 +14,7 @@ import React, { useContext, useState } from "react";
 import session from "../../api/sessions_manager";
 import axios from "axios";
 import { API_URL } from "../../api/useAPI";
+import Wellbeing from "./Wellbeing";
 
 const PROMPT_SUGGESTIONS = [
   {
@@ -149,23 +150,25 @@ const Chatbot = () => {
   return (
     <Container
       sx={{
-        marginTop: 5,
         padding: 2,
-        height: "70vh",
+        height: "90vh",
         display: "flex",
         flexDirection: "column",
         pointerEvents: isAuth ? "all" : "none",
         opacity: isAuth ? 1 : 0.5,
       }}
     >
-      <Box sx={{ flex: 1, overflowY: "auto", marginBottom: 2, padding: 2 }}>
+      <Box sx={{ flex: 1, overflowY: "auto", padding: 2 }}>
         {messages.length == 0 && (
-          <Box sx={{ marginTop: 5 }}>
+          <Box>
             <Typography variant="h4" gutterBottom>
               Good day! <br />
               How can I assist you today?
             </Typography>
-            <Grid container spacing={2} sx={{ marginTop: 5 }}>
+            <Grid container spacing={2} sx={{ marginTop: 2 }}>
+              <Grid item xs={24} sm={12} sx={{ marginBottom: 2 }}>
+                <Wellbeing />
+              </Grid>
               {PROMPT_SUGGESTIONS.map((suggestion, index) => (
                 <Grid item xs={12} sm={6} key={index}>
                   <Card
