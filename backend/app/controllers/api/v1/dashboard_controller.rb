@@ -28,7 +28,7 @@ class Api::V1::DashboardController < ApplicationController
     workshops_per_month = workshops.group_by { |workshop| workshop.start_time.strftime("%B") }
     workshops_per_month_count = workshops_per_month.map { |month, workshops| {"month": month, "count": workshops.count} }
     workshops_registrations_per_month = workshops_per_month.map { |month, workshops| {"month": month, "count": workshops.map { |workshop| workshop.users.count }.sum} }
-    average_workshops_registrations_per_month = workshops_registrations_per_month.map { |workshop| {"month": workshop[:month], "average": workshop[:count] / workshops_per_month_count.find { |workshop_count| workshop_count[:month] == workshop[:month] }[:count]} }
+    average_workshops_registrations_per_month = workshops_registrations_per_month.map { |workshop| {"month": workshop[:month], "average": workshop[:count].to_f / workshops_per_month_count.find { |workshop_count| workshop_count[:month] == workshop[:month] }[:count]} }
     average_workshops_registrations_per_month_sorted = average_workshops_registrations_per_month.sort_by { |workshop| Date::MONTHNAMES.index(workshop[:month]) }
     average_workshops_registrations_per_month_sorted_filtered = 
       average_workshops_registrations_per_month_sorted.select { |workshop| workshop[:average] > 0 }
