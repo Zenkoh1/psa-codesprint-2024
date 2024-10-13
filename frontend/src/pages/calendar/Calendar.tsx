@@ -21,9 +21,8 @@ import { DateTimePicker, renderTimeViewClock } from "@mui/x-date-pickers";
 const CalendarPage = () => {
   const [formData, setFormData] = useState({
     title: "",
-    description: "",
     start_time: new Date(),
-    end_time: new Date(),
+    end_time: new Date(new Date().getTime() + 60 * 60 * 1000),
   });
 
   const {
@@ -52,16 +51,17 @@ const CalendarPage = () => {
   }, []);
 
   // Handle event creation
-  const handleCreateEvent = () => {
-    createEvent();
-    fetchAPI();
+  const handleCreateEvent = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (formData.title) {
+      createEvent();
+      fetchAPI();
 
-    setFormData({
-      title: "",
-      description: "",
-      start_time: new Date(),
-      end_time: new Date(),
-    });
+      setFormData({
+        ...formData,
+        title: "",
+      });
+    }
   };
 
   // Get today's events
@@ -132,67 +132,56 @@ const CalendarPage = () => {
             </Box>
 
             <Typography variant="h6">Create an Event</Typography>
-            <TextField
-              label="Event Title"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              value={formData.title}
-              onChange={(e) =>
-                setFormData({ ...formData, title: e.target.value })
-              }
-            />
-            <TextField
-              label="Description"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              value={formData.description}
-              onChange={(e) =>
-                setFormData({ ...formData, description: e.target.value })
-              }
-            />
-            <DateTimePicker
-              label="Start time"
-              viewRenderers={{
-                hours: renderTimeViewClock,
-                minutes: renderTimeViewClock,
-              }}
-              value={dayjs(formData.start_time)}
-              onChange={(newValue) => {
-                if (newValue) {
-                  setFormData({
-                    ...formData,
-                    start_time: newValue.toDate(),
-                  });
+            <form onSubmit={handleCreateEvent}>
+              <TextField
+                label="Event Title"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={formData.title}
+                onChange={(e) =>
+                  setFormData({ ...formData, title: e.target.value })
                 }
-              }}
-              sx={{ mb: 2, mt: 2, width: "100%" }}
-            />
-            <DateTimePicker
-              label="End time"
-              viewRenderers={{
-                hours: renderTimeViewClock,
-                minutes: renderTimeViewClock,
-              }}
-              value={dayjs(formData.end_time)}
-              onChange={(newValue) => {
-                if (newValue) {
-                  setFormData({
-                    ...formData,
-                    end_time: newValue.toDate(),
-                  });
-                }
-              }}
-              sx={{ mb: 2, mt: 1, width: "100%" }}
-            />
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleCreateEvent}
-            >
-              Create Event
-            </Button>
+                required
+              />
+              <DateTimePicker
+                label="Start time"
+                viewRenderers={{
+                  hours: renderTimeViewClock,
+                  minutes: renderTimeViewClock,
+                }}
+                value={dayjs(formData.start_time)}
+                onChange={(newValue) => {
+                  if (newValue) {
+                    setFormData({
+                      ...formData,
+                      start_time: newValue.toDate(),
+                    });
+                  }
+                }}
+                sx={{ mb: 2, mt: 2, width: "100%" }}
+              />
+              <DateTimePicker
+                label="End time"
+                viewRenderers={{
+                  hours: renderTimeViewClock,
+                  minutes: renderTimeViewClock,
+                }}
+                value={dayjs(formData.end_time)}
+                onChange={(newValue) => {
+                  if (newValue) {
+                    setFormData({
+                      ...formData,
+                      end_time: newValue.toDate(),
+                    });
+                  }
+                }}
+                sx={{ mb: 2, mt: 1, width: "100%" }}
+              />
+              <Button variant="contained" color="primary" type="submit">
+                Create Event
+              </Button>
+            </form>
           </Paper>
         </Grid>
       </Grid>
