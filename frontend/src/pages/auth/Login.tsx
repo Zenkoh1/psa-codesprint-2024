@@ -29,7 +29,7 @@ const Login = () => {
       sx={{
         display: "flex",
         flexDirection: "column",
-        height: "calc(100vh - 64px)",
+        minHeight: "calc(100vh - 64px)",
         justifyContent: "center",
         alignItems: "center",
         backgroundImage:
@@ -40,7 +40,16 @@ const Login = () => {
       }}
     >
       {/* Card for the form */}
-      <Card sx={{ width: "30vw", padding: 8, textAlign: "center", zIndex: 2 }}>
+      <Card
+        sx={{
+          width: "30vw",
+          px: 8,
+          py: 4,
+          textAlign: "center",
+          zIndex: 2,
+          my: 2,
+        }}
+      >
         <CardContent>
           <form autoComplete="off" onSubmit={handleSubmit}>
             <Typography variant="h4" mb={3}>

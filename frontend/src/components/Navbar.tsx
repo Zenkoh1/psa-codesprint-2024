@@ -31,15 +31,19 @@ const Navbar = () => {
             />
           </Typography>
           <Stack spacing={2} direction="row">
-            <IconButton component={RouterLink} to="/workshops">
-              <School />
-            </IconButton>
-            <IconButton component={RouterLink} to="/forum">
-              <Chat />
-            </IconButton>
-            <IconButton component={RouterLink} to="/calendar">
-              <Event />
-            </IconButton>
+            {isAuth && (
+              <>
+                <IconButton component={RouterLink} to="/workshops">
+                  <School />
+                </IconButton>
+                <IconButton component={RouterLink} to="/forum">
+                  <Chat />
+                </IconButton>
+                <IconButton component={RouterLink} to="/calendar">
+                  <Event />
+                </IconButton>
+              </>
+            )}
             {isAuth && session.getters.getUser().admin && (
               <IconButton component={RouterLink} to="/admin_dashboard">
                 <SupervisorAccount />
