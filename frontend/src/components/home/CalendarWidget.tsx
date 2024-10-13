@@ -74,35 +74,34 @@ const CalendarWidget = () => {
           <ArrowForward />
         </IconButton>
       </Box>
-      <DateCalendar
-        views={["day"]}
-        slots={{
-          day: ServerDay,
+      <Box
+        sx={{
+          maxWidth: "100%",
+          width: "100%",
+          overflowX: "auto", // Allows horizontal scrolling on smaller screens
         }}
-        /*
-        By right this should work, based on MUI api, but it doesnt/ can fix later ba
-        slotProps: {{
-          calendarHeader:
-            { sx: { display: "none" } },
-        }}
-        */
-        slotProps={{
-          day: {
-            highlightedDays: calendarEventData?.reduce((acc, event) => {
-              // Gets all dates between start and end date
-              const start = new Date(event.start_time);
-              start.setHours(0, 0, 0, 0);
-              const end = new Date(event.end_time);
-              end.setHours(23, 59, 59, 999);
-              const days = [];
-              for (let d = start; d <= end; d.setDate(d.getDate() + 1)) {
-                days.push(new Date(d));
-              }
-              return [...acc, ...days];
-            }, [] as Date[]),
-          } as any,
-        }}
-      />
+      >
+        <DateCalendar
+          views={["day"]}
+          slots={{ day: ServerDay }}
+          sx={{ width: "100%" }} // Ensure the calendar uses the available space
+          slotProps={{
+            day: {
+              highlightedDays: calendarEventData?.reduce((acc, event) => {
+                const start = new Date(event.start_time);
+                start.setHours(0, 0, 0, 0);
+                const end = new Date(event.end_time);
+                end.setHours(23, 59, 59, 999);
+                const days = [];
+                for (let d = start; d <= end; d.setDate(d.getDate() + 1)) {
+                  days.push(new Date(d));
+                }
+                return [...acc, ...days];
+              }, [] as Date[]),
+            } as any,
+          }}
+        />
+      </Box>
     </Paper>
   );
 };
