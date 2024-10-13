@@ -1,5 +1,5 @@
 import { Link as RouterLink } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   AppBar,
   Toolbar,
@@ -7,12 +7,23 @@ import {
   Stack,
   IconButton,
   Avatar,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import { School, Chat, Event, SupervisorAccount } from "@mui/icons-material";
 import session from "../api/sessions_manager";
 
 const Navbar = () => {
   const { isAuth, setIsAuth } = useContext(session.SessionContext);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  useEffect(() => {
+    setAnchorEl(null);
+  }, []);
+
+  const handleAvatarClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget); // Open the dropdown menu
+  };
 
   return (
     <AppBar position="static" elevation={0} color="secondary">
@@ -66,17 +77,36 @@ const Navbar = () => {
                   height: 35,
                   bgcolor: "primary.main",
                 }}
-                onClick={() => {
-                  session.actions
-                    .logoutUser()
-                    .then(() => setIsAuth(false))
-                    .catch(() => {
-                      alert("Error logging out, refresh the page!");
-                    });
-                }}
+                onClick={handleAvatarClick}
               >
                 {session.getters.getUser().username.at(0)}
               </Avatar>
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={() => setAnchorEl(null)}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "right",
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+              >
+                <MenuItem
+                  onClick={() => {
+                    session.actions
+                      .logoutUser()
+                      .then(() => setIsAuth(false))
+                      .catch(() => {
+                        alert("Error logging out, refresh the page!");
+                      });
+                  }}
+                >
+                  Logout
+                </MenuItem>
+              </Menu>
             </Stack>
           )}
         </div>
