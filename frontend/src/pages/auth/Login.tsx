@@ -87,6 +87,13 @@ const Login = () => {
             >
               Dont have an account? Register
             </Typography>
+            <br />
+            <Typography variant="body2" align="center">
+              <i>
+                To log in as admin for testing: <br />
+                Use the account admin@test.com and password admin
+              </i>{" "}
+            </Typography>
           </form>
         </CardContent>
       </Card>
