@@ -85,7 +85,7 @@ const Login = () => {
               sx={{ mt: 2, textDecoration: "underline", cursor: "pointer" }}
               onClick={() => navigate("/register")} // Navigate to register page
             >
-              Dont have an account? Register
+              Don&apos;t have an account? Register
             </Typography>
             <br />
             <Typography variant="body2" align="center">
