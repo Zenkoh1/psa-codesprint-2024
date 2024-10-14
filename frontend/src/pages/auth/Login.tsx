@@ -90,9 +90,11 @@ const Login = () => {
             <br />
             <Typography variant="body2" align="center">
               <i>
-                To log in as admin for testing: <br />
-                Use the account admin@test.com and password admin
-              </i>{" "}
+                To the organisers of PSA Code Sprint <br />
+                The admin account details are provided here for convenience:{" "}
+                <br />
+                Email: admin@test.com, Password: admin
+              </i>
             </Typography>
           </form>
         </CardContent>
