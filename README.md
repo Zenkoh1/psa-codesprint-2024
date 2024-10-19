@@ -1,5 +1,4 @@
 # PSA Codesprint 2024!
-Zen Koh
 ## Installation
 ## Step 1 - Dependencies
 
